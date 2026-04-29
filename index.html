@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>micah gao</title>
+  <meta name="description" content="micah gao. student, builder, skier.">
+  <meta property="og:title" content="micah gao">
+  <meta property="og:description" content="Self-taught developer. Business student. Skier, in that order depending on the snow.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap">
+  <style>
+    :root {
+      --bg: #fafafa;
+      --fg: #0a0a0a;
+      --fg-soft: #555;
+      --fg-faint: #999;
+      --line: #e5e5e5;
+      --accent: #c44545;
+
+      --container: 1080px;
+      --gutter: clamp(24px, 5vw, 64px);
+      --section-y: clamp(48px, 7vh, 80px);
+      --gap-tight: clamp(14px, 1.8vh, 22px);
+      --gap-mid: clamp(20px, 2.6vh, 32px);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+      font-size: clamp(16px, 1.05vw, 18px);
+      line-height: 1.6;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main { flex: 1 0 auto; }
+    footer { flex-shrink: 0; }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+      transition: opacity 0.2s ease;
+    }
+    a:hover { opacity: 0.55; }
+
+    .wrap {
+      width: 100%;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding-left: var(--gutter);
+      padding-right: var(--gutter);
+    }
+
+    /* hero */
+    .hero {
+      position: relative;
+      padding-top: clamp(36px, 5vh, 64px);
+      padding-bottom: clamp(40px, 6vh, 72px);
+    }
+    .hero-inner {
+      width: 100%;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding-left: var(--gutter);
+      padding-right: var(--gutter);
+    }
+
+    .greeting {
+      display: block;
+      font-size: clamp(13px, 1vw, 16px);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--fg-faint);
+      margin-bottom: var(--gap-tight);
+      text-transform: lowercase;
+    }
+
+    .name {
+      margin: 0 0 var(--gap-tight);
+      font-size: clamp(32px, 7vw, 80px);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1;
+      min-height: 1em;
+    }
+    .name .caret {
+      display: inline-block;
+      width: 0.05em;
+      height: 0.82em;
+      background: currentColor;
+      margin-left: 0.06em;
+      vertical-align: -0.08em;
+      animation: caret-blink 1s steps(1) infinite;
+    }
+    @keyframes caret-blink {
+      50% { opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .name .caret { animation: none; }
+    }
+
+    .headline {
+      margin: 0;
+      font-size: clamp(16px, 1.5vw, 22px);
+      max-width: 36ch;
+      color: var(--fg-soft);
+      line-height: 1.5;
+    }
+
+    /* sections */
+    section {
+      padding-top: var(--section-y);
+      padding-bottom: var(--section-y);
+    }
+    section + section { padding-top: 0; }
+    main > section:last-of-type { padding-bottom: clamp(28px, 4vh, 44px); }
+
+    h2 {
+      margin: 0 0 var(--gap-mid);
+      font-size: clamp(12px, 0.85vw, 14px);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg-faint);
+    }
+
+    /* about */
+    .about p {
+      margin: 0;
+      font-size: clamp(18px, 1.4vw, 22px);
+      line-height: 1.55;
+      max-width: 56ch;
+      color: var(--fg);
+    }
+    .languages {
+      margin: var(--gap-mid) 0 0 !important;
+      display: flex;
+      align-items: baseline;
+      gap: clamp(14px, 2.4vw, 28px);
+      font-size: clamp(15px, 1.05vw, 17px) !important;
+      line-height: 1.5 !important;
+      color: var(--fg-soft) !important;
+      flex-wrap: wrap;
+    }
+    .languages .label {
+      width: 100px;
+      font-size: clamp(12px, 0.85vw, 14px);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg-faint);
+      flex-shrink: 0;
+    }
+    @media (max-width: 600px) {
+      .languages { flex-direction: column; gap: 4px; }
+      .languages .label { width: auto; }
+    }
+
+    /* projects */
+    .project {
+      padding: clamp(18px, 2vh, 26px) 0;
+      border-top: 1px solid var(--line);
+    }
+    .project:last-child { border-bottom: 1px solid var(--line); }
+
+    .project-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+    .project-title {
+      font-size: clamp(20px, 1.7vw, 26px);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      border: 0;
+    }
+    .project-title.linked::after {
+      content: ' ↗';
+      font-size: 0.75em;
+      color: var(--fg-faint);
+      transition: color 0.2s ease;
+    }
+    .project-title.linked:hover::after { color: var(--fg); }
+    .project .year {
+      font-size: clamp(12px, 0.85vw, 14px);
+      color: var(--fg-faint);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.04em;
+    }
+    .project p {
+      margin: 0 0 6px;
+      color: var(--fg-soft);
+      font-size: clamp(15px, 1.05vw, 17px);
+      line-height: 1.55;
+      max-width: 64ch;
+    }
+    .project .stack { margin-top: 4px; }
+    .stack {
+      font-size: clamp(12px, 0.85vw, 14px);
+      color: var(--fg-faint);
+      letter-spacing: 0.03em;
+    }
+
+    /* contact */
+    .contact ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .contact li {
+      display: flex;
+      align-items: baseline;
+      gap: clamp(16px, 3vw, 40px);
+      padding: clamp(10px, 1.2vh, 14px) 0;
+      border-top: 1px solid var(--line);
+      font-size: clamp(15px, 1.1vw, 17px);
+    }
+    .contact li:last-child { border-bottom: 1px solid var(--line); }
+    .contact .label {
+      width: 100px;
+      font-size: clamp(12px, 0.85vw, 14px);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--fg-faint);
+      flex-shrink: 0;
+    }
+
+    /* footer */
+    footer {
+      padding-top: clamp(20px, 3vh, 32px);
+      padding-bottom: clamp(24px, 3.5vh, 36px);
+      border-top: 1px solid var(--line);
+      margin-top: 0;
+    }
+    footer .wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      text-align: center;
+    }
+    footer p {
+      margin: 0;
+      font-size: clamp(12px, 0.85vw, 14px);
+      color: var(--fg-faint);
+      letter-spacing: 0.03em;
+    }
+    .heart { color: var(--accent); }
+
+    /* on-scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .projects .project.reveal:nth-of-type(1) { transition-delay: 0.05s; }
+    .projects .project.reveal:nth-of-type(2) { transition-delay: 0.13s; }
+    .projects .project.reveal:nth-of-type(3) { transition-delay: 0.21s; }
+    .projects .project.reveal:nth-of-type(4) { transition-delay: 0.29s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* skier */
+    .ski-scene {
+      position: relative;
+      height: 140px;
+      margin-top: clamp(20px, 3vh, 36px);
+      overflow: hidden;
+      pointer-events: none;
+      user-select: none;
+    }
+    .ski-mountains {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 28px;
+      width: 100%;
+      height: 110px;
+      pointer-events: none;
+    }
+    .mtn-back  { fill: #dde4ed; }
+    .mtn-mid   { fill: #b8c4d4; }
+    .mtn-front { fill: #8b9aae; }
+    .mtn-snow  { fill: #f4f6fa; }
+    .mtn-glow  { fill: #e8c8be; opacity: 0.55; }
+    .ski-slope {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 28px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--line) 6%, var(--line) 94%, transparent 100%);
+    }
+    .ski-track {
+      position: absolute;
+      left: 0;
+      bottom: 28px;
+      animation: ski-across 12s linear infinite;
+    }
+    .skier {
+      position: relative;
+      width: 96px;
+      height: 64px;
+      animation: ski-bob 0.6s ease-in-out infinite alternate;
+    }
+    .skier-svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    /* trailing snow spray */
+    .spray {
+      position: absolute;
+      bottom: 2px;
+      left: 8px;
+      border-radius: 50%;
+      background: var(--fg-faint);
+      opacity: 0;
+      animation: spray-emit 0.7s ease-out infinite;
+    }
+    .spray-1 { width: 5px; height: 5px; animation-delay: 0s;     }
+    .spray-2 { width: 4px; height: 4px; animation-delay: 0.18s;  }
+    .spray-3 { width: 6px; height: 6px; animation-delay: 0.36s;  }
+    .spray-4 { width: 3px; height: 3px; animation-delay: 0.52s;  }
+
+    /* speed streaks behind skier */
+    .streak {
+      position: absolute;
+      height: 1px;
+      background: var(--fg-faint);
+      opacity: 0;
+      animation: streak-emit 0.85s ease-out infinite;
+    }
+    .streak-1 { bottom: 22px; left: 0;  animation-delay: 0.05s; }
+    .streak-2 { bottom: 34px; left: 4px; animation-delay: 0.4s;  }
+    .streak-3 { bottom: 14px; left: 2px; animation-delay: 0.65s; }
+
+    .flake {
+      position: absolute;
+      top: -12px;
+      color: var(--fg-faint);
+      font-size: 10px;
+      opacity: 0.5;
+      animation: flake-fall linear infinite;
+    }
+    .flake-1 { left: 14%; animation-duration: 8s;  animation-delay: 0s;   }
+    .flake-2 { left: 38%; animation-duration: 10s; animation-delay: 1.6s; font-size: 8px; }
+    .flake-3 { left: 62%; animation-duration: 9s;  animation-delay: 3.2s; }
+    .flake-4 { left: 84%; animation-duration: 11s; animation-delay: 2.4s; font-size: 7px; }
+    .flake-5 { left: 26%; animation-duration: 12s; animation-delay: 4.8s; font-size: 9px; }
+
+    @keyframes ski-across {
+      0%   { transform: translateX(-12%); opacity: 0; }
+      8%   { opacity: 1; }
+      92%  { opacity: 1; }
+      100% { transform: translateX(calc(100vw + 120px)); opacity: 0; }
+    }
+    @keyframes ski-bob {
+      0%   { translate: 0 0; }
+      100% { translate: 0 -2px; }
+    }
+    @keyframes spray-emit {
+      0%   { transform: translate(0, 0) scale(0.4); opacity: 0; }
+      18%  { opacity: 0.55; }
+      100% { transform: translate(-32px, -14px) scale(1.5); opacity: 0; }
+    }
+    @keyframes streak-emit {
+      0%   { width: 0;    opacity: 0;    transform: translateX(0); }
+      25%  { opacity: 0.4; }
+      100% { width: 32px; opacity: 0;    transform: translateX(-34px); }
+    }
+    @keyframes flake-fall {
+      0%   { transform: translateY(0)     translateX(0);   opacity: 0; }
+      10%  { opacity: 0.55; }
+      90%  { opacity: 0.55; }
+      100% { transform: translateY(120px) translateX(10px); opacity: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .ski-scene { height: 110px; }
+      .skier { width: 78px; height: 52px; }
+      .ski-mountains { height: 80px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ski-track, .skier, .spray, .streak, .flake { animation: none; }
+      .ski-track { transform: translateX(35%); }
+      .spray, .streak, .flake { display: none; }
+    }
+
+    /* mobile tightening */
+    @media (max-width: 600px) {
+      .contact li {
+        flex-direction: column;
+        gap: 4px;
+      }
+      .contact .label { width: auto; }
+      .project-head { gap: 8px; }
+    }
+
+    /* really wide displays */
+    @media (min-width: 1600px) {
+      :root { --container: 1200px; }
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="hero-inner">
+        <span class="greeting" id="greeting">good morning.</span>
+        <h1 class="name" aria-label="micah gao"><span id="name-text"></span><span class="caret" aria-hidden="true"></span></h1>
+        <p class="headline">Self-taught developer. Business student. Skier, in that order depending on the snow.</p>
+      </div>
+    </section>
+
+    <section class="about reveal" id="about">
+      <div class="wrap">
+        <h2>about</h2>
+        <p>I'm from Fishers, Indiana, studying accounting and finance at IU Kelley and grinding for the CPA. I got into coding freshman winter break by trying to clone YouTube in HTML and CSS, and it stuck. Most of my projects come out of hackathons/random ideas. Outside of that, mostly skiing and Korean dramas :P.</p>
+        <p class="languages">
+          <span class="label">languages</span>
+          <span>Python · TypeScript · Swift · JavaScript</span>
+        </p>
+      </div>
+
+      <div class="ski-scene" aria-hidden="true">
+        <svg class="ski-mountains" viewBox="0 0 1200 110" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="sky-glow" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"  stop-color="#f3d6cc" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="#f3d6cc" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="1200" height="80" fill="url(#sky-glow)"/>
+
+          <path class="mtn-back" d="M 0 110 L 60 58 L 130 78 L 200 42 L 270 70 L 340 36 L 410 64 L 480 48 L 560 72 L 640 38 L 720 60 L 800 50 L 880 70 L 960 36 L 1040 62 L 1120 44 L 1200 66 L 1200 110 Z"/>
+
+          <path class="mtn-mid" d="M 0 110 L 50 76 L 120 90 L 190 60 L 270 86 L 340 56 L 420 80 L 500 66 L 580 88 L 650 62 L 730 80 L 810 70 L 890 86 L 970 60 L 1050 80 L 1130 70 L 1200 84 L 1200 110 Z"/>
+
+          <path class="mtn-front" d="M 0 110 L 40 88 L 110 96 L 180 80 L 260 94 L 340 76 L 420 92 L 500 82 L 580 96 L 660 80 L 740 92 L 820 86 L 900 96 L 980 82 L 1060 94 L 1140 88 L 1200 94 L 1200 110 Z"/>
+
+          <!-- snowy peak caps on front range -->
+          <path class="mtn-snow" d="M 256 96 L 260 94 L 264 96 Z M 416 94 L 420 92 L 424 94 Z M 576 98 L 580 96 L 584 98 Z M 736 94 L 740 92 L 744 94 Z M 1056 96 L 1060 94 L 1064 96 Z"/>
+        </svg>
+        <div class="ski-slope"></div>
+
+        <div class="ski-track">
+          <div class="skier">
+            <span class="streak streak-1"></span>
+            <span class="streak streak-2"></span>
+            <span class="streak streak-3"></span>
+            <span class="spray spray-1"></span>
+            <span class="spray spray-2"></span>
+            <span class="spray spray-3"></span>
+            <span class="spray spray-4"></span>
+
+            <svg class="skier-svg" viewBox="0 0 100 64" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 14 56 L 78 56 Q 85 56 88 53"
+                    stroke="#0a0a0a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+
+              <line x1="60" y1="30" x2="38" y2="55"
+                    stroke="#777" stroke-width="0.9" stroke-linecap="round"/>
+
+              <polyline points="44,54 54,40 40,32"
+                        fill="none" stroke="#1c1c1c" stroke-width="4"
+                        stroke-linecap="round" stroke-linejoin="round"/>
+
+              <path d="M 40 32 Q 52 24 64 26"
+                    stroke="#c44545" stroke-width="9.5" stroke-linecap="round" fill="none"/>
+              <path d="M 40 34 Q 52 28 62 29"
+                    stroke="#8f2f2f" stroke-width="1.6" stroke-linecap="round"
+                    fill="none" opacity="0.7"/>
+
+              <polyline points="46,54 56,40 42,32"
+                        fill="none" stroke="#0d0d0d" stroke-width="4"
+                        stroke-linecap="round" stroke-linejoin="round"/>
+
+              <path d="M 60 27 L 70 30"
+                    stroke="#c44545" stroke-width="4.8" stroke-linecap="round" fill="none"/>
+              <circle cx="71" cy="30.5" r="2.2" fill="#1a1a1a"/>
+
+              <line x1="71" y1="30.5" x2="48" y2="55"
+                    stroke="#888" stroke-width="0.9" stroke-linecap="round"/>
+
+              <circle cx="68" cy="20" r="6" fill="#0a0a0a"/>
+              <path d="M 62.5 19 Q 68 17.5 73.5 18.8"
+                    stroke="#c44545" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <circle cx="66" cy="19" r="0.9" fill="#fafafa" opacity="0.7"/>
+
+              <path d="M 18 52 L 82 52 Q 89 52 92 49"
+                    stroke="#0a0a0a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <rect x="46" y="50.5" width="6" height="2" fill="#c44545" rx="0.5"/>
+            </svg>
+          </div>
+        </div>
+
+        <span class="flake flake-1">❄</span>
+        <span class="flake flake-2">❄</span>
+        <span class="flake flake-3">❄</span>
+        <span class="flake flake-4">❄</span>
+        <span class="flake flake-5">❄</span>
+      </div>
+    </section>
+
+    <section class="projects" id="projects">
+      <div class="wrap">
+        <h2 class="reveal">projects</h2>
+
+        <article class="project reveal">
+          <div class="project-head">
+            <a class="project-title linked" href="https://skipilot.cc" target="_blank" rel="noopener">skipilot</a>
+            <span class="year">2026</span>
+          </div>
+          <p>Brand-agnostic ski recommendations. Ranks skis across 12 fit dimensions, pulls live pricing from 7 retailers, and reads gear specs off your ski and boot photos. Live at skipilot.cc.</p>
+          <p class="stack">next.js · supabase · sonnet 4.6</p>
+        </article>
+
+        <article class="project reveal">
+          <div class="project-head">
+            <span class="project-title">onkos</span>
+            <span class="year">2026</span>
+          </div>
+          <p>Drop in a patient's records and get back matching clinical trials with grounded reasoning. Self-hosted a 30B medical vision-language model on an H200 and orchestrated it through LangGraph. Won the Regeneron grand prize at HackPrinceton out of 600+ hackers.</p>
+          <p class="stack">next.js · fastapi · k2-think · kimi-k2</p>
+        </article>
+
+        <article class="project reveal">
+          <div class="project-head">
+            <span class="project-title">redhue</span>
+            <span class="year">2026</span>
+          </div>
+          <p>Real-time wildfire dashboard for incident commanders, fusing 8 live data feeds into one map with burn-perimeter projections from a TypeScript port of Rothermel's spread model. Built at Stanford TreeHacks, recognized by Anthropic.</p>
+          <p class="stack">next.js · sonnet 4.6 · deepgram · supabase</p>
+        </article>
+
+        <article class="project reveal">
+          <div class="project-head">
+            <span class="project-title">doji</span>
+            <span class="year">2025</span>
+          </div>
+          <p>AI financial advisor wired into your brokerage accounts through Plaid. Pulls live positions and gives personalized takes, not generic market chatter.</p>
+          <p class="stack">react native · express · postgres · plaid</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="contact reveal" id="contact">
+      <div class="wrap">
+        <h2>come say hi @</h2>
+        <ul>
+          <li><span class="label">email</span><a href="mailto:mfgao@iu.edu">mfgao@iu.edu</a></li>
+          <li><span class="label">github</span><a href="https://github.com/micah872" target="_blank" rel="noopener">github.com/micah872</a></li>
+          <li><span class="label">linkedin</span><a href="https://www.linkedin.com/in/micahgao/" target="_blank" rel="noopener">linkedin.com/in/micahgao</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="reveal">
+    <div class="wrap">
+      <p>made with <span class="heart">♥</span> by micah gao</p>
+      <p>© <span id="year"></span> all rights reserved</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function currentGreeting() {
+      const h = new Date().getHours();
+      if (h >= 5  && h < 12) return 'good morning. 🌅';
+      if (h >= 12 && h < 17) return 'good afternoon. ☀️';
+      if (h >= 17 && h < 22) return 'good evening. 🌇';
+      if (h >= 22 || h < 2)  return 'up late? 🌙';
+      return 'GO TO BED!!! 💤';
+    }
+
+    const greeting = document.getElementById('greeting');
+    greeting.textContent = currentGreeting();
+    setInterval(() => { greeting.textContent = currentGreeting(); }, 60 * 1000);
+
+    (function typeName() {
+      const el = document.getElementById('name-text');
+      const phrases = ['micah gao', '高博文'];
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) { el.textContent = phrases[0]; return; }
+
+      let idx = 0, char = 0, deleting = false;
+      function tick() {
+        const word = phrases[idx];
+        if (!deleting) {
+          char++;
+          el.textContent = word.slice(0, char);
+          if (char === word.length) {
+            deleting = true;
+            return setTimeout(tick, 2600);
+          }
+          setTimeout(tick, 180);
+        } else {
+          char--;
+          el.textContent = word.slice(0, char);
+          if (char === 0) {
+            deleting = false;
+            idx = (idx + 1) % phrases.length;
+            return setTimeout(tick, 700);
+          }
+          setTimeout(tick, 95);
+        }
+      }
+      tick();
+    })();
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>
