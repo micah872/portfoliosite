@@ -9,7 +9,7 @@
   <meta property="og:description" content="Self-taught developer. Business student. Skier, in that order depending on the snow.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Noto+Sans+SC:wght@300;400;500&display=swap">
   <style>
     :root {
       --bg: #fafafa;
@@ -33,7 +33,8 @@
     body {
       background: var(--bg);
       color: var(--fg);
-      font-family: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+      font-family: 'Bricolage Grotesque', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+      font-variation-settings: 'opsz' 14, 'wdth' 100;
       font-size: clamp(16px, 1.05vw, 18px);
       line-height: 1.6;
       font-weight: 400;
@@ -102,9 +103,10 @@
       margin: 0 0 var(--gap-tight);
       font-size: clamp(32px, 7vw, 80px);
       font-weight: 600;
-      letter-spacing: -0.035em;
+      letter-spacing: -0.025em;
       line-height: 1;
       min-height: 1em;
+      font-variation-settings: 'opsz' 96, 'wdth' 100, 'wght' 600;
     }
     .name .caret {
       display: inline-block;
@@ -145,6 +147,7 @@
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--fg-faint);
+      font-variation-settings: 'opsz' 14, 'wdth' 95, 'wght' 500;
     }
 
     /* about */
@@ -192,6 +195,26 @@
       gap: 16px;
       margin-bottom: 6px;
       flex-wrap: wrap;
+    }
+    .project.featured { position: relative; }
+    .project.featured::before {
+      content: '';
+      position: absolute;
+      left: clamp(-16px, -1.2vw, -10px);
+      top: clamp(18px, 2vh, 26px);
+      bottom: clamp(18px, 2vh, 26px);
+      width: 2px;
+      background: var(--accent);
+    }
+    .project-kicker {
+      display: block;
+      font-size: clamp(10px, 0.75vw, 12px);
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+      font-variation-settings: 'opsz' 12, 'wdth' 95, 'wght' 600;
     }
     .project-title {
       font-size: clamp(20px, 1.7vw, 26px);
@@ -564,7 +587,8 @@
           <p class="stack">next.js · supabase · sonnet 4.6</p>
         </article>
 
-        <article class="project reveal">
+        <article class="project reveal featured">
+          <span class="project-kicker">winner · regeneron grand prize · hackprinceton</span>
           <div class="project-head">
             <span class="project-title">onkos</span>
             <span class="year">2026</span>
@@ -600,7 +624,7 @@
           <li><span class="label">email</span><a href="mailto:mfgao@iu.edu">mfgao@iu.edu</a></li>
           <li><span class="label">github</span><a href="https://github.com/micah872" target="_blank" rel="noopener">github.com/micah872</a></li>
           <li><span class="label">linkedin</span><a href="https://www.linkedin.com/in/micahgao/" target="_blank" rel="noopener">linkedin.com/in/micahgao</a></li>
-          <li><span class="label">resume</span><a href="/Gao_Micah_Hybrid_Soph.pdf" target="_blank" rel="noopener">view PDF ↗</a></li>
+          <li><span class="label">resume</span><a href="/Gao_Micah_Hybrid_Soph.pdf" target="_blank" rel="noopener">view PDF</a></li>
         </ul>
       </div>
     </section>
@@ -608,8 +632,8 @@
 
   <footer class="reveal">
     <div class="wrap">
-      <p>made with <span class="heart">♥</span> by micah gao</p>
-      <p>© <span id="year"></span> all rights reserved</p>
+      <p>made with <span class="heart">♥</span></p>
+      <p>© <span id="year"></span> Micah Gao. All rights reserved.</p>
     </div>
   </footer>
 
