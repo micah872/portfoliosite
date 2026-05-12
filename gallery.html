@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>camera roll — micah gao</title>
+  <meta name="description" content="photos by micah gao.">
+  <style>
+    :root {
+      --bg: #fafafa;
+      --fg: #0a0a0a;
+      --fg-soft: #555;
+      --fg-faint: #999;
+      --line: #e5e5e5;
+      --accent: #c44545;
+      --container: 1200px;
+      --gutter: clamp(24px, 5vw, 64px);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Courier New', Courier, ui-monospace, monospace;
+      font-size: clamp(16px, 1.05vw, 18px);
+      line-height: 1.6;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.05;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    }
+
+    main { flex: 1 0 auto; }
+    footer { flex-shrink: 0; }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+      transition: opacity 0.2s ease;
+    }
+    a:hover { opacity: 0.55; }
+
+    .wrap {
+      width: 100%;
+      max-width: var(--container);
+      margin: 0 auto;
+      padding-left: var(--gutter);
+      padding-right: var(--gutter);
+    }
+
+    .gallery-head {
+      padding-top: clamp(36px, 5vh, 64px);
+      padding-bottom: clamp(28px, 4vh, 48px);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .back-link {
+      font-size: clamp(13px, 1vw, 15px);
+      color: var(--fg-soft);
+      letter-spacing: 0.02em;
+    }
+    .back-link::before {
+      content: '← ';
+      color: var(--fg-faint);
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+    .back-link:hover::before { transform: translateX(-2px); }
+
+    .gallery-title h1 {
+      margin: 0 0 6px;
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 1;
+    }
+    .gallery-title p {
+      margin: 0;
+      color: var(--fg-soft);
+      font-size: clamp(14px, 1.05vw, 17px);
+      max-width: 48ch;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: clamp(20px, 2.2vw, 32px) clamp(10px, 1vw, 16px);
+      padding-bottom: clamp(48px, 7vh, 88px);
+    }
+
+    .tile {
+      display: block;
+      margin: 0;
+    }
+    .tile-img {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      background: var(--line);
+      line-height: 0;
+      transform: translateY(0);
+      transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+                  box-shadow 0.35s ease;
+      will-change: transform;
+    }
+    .tile:hover .tile-img {
+      transform: translateY(-6px);
+      box-shadow: 0 14px 28px -14px rgba(0, 0, 0, 0.25),
+                  0 6px 12px -8px rgba(0, 0, 0, 0.12);
+    }
+    .tile-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .tile figcaption {
+      padding: 12px 2px 0;
+      font-size: clamp(12px, 0.9vw, 14px);
+      color: var(--fg-soft);
+      letter-spacing: 0.01em;
+      line-height: 1.45;
+      min-height: calc(1.45em + 12px);
+    }
+
+    /* footer */
+    footer {
+      padding-top: clamp(20px, 3vh, 32px);
+      padding-bottom: clamp(24px, 3.5vh, 36px);
+      border-top: 1px solid var(--line);
+      margin-top: 0;
+    }
+    footer .wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      text-align: center;
+    }
+    footer p {
+      margin: 0;
+      font-size: clamp(12px, 0.85vw, 14px);
+      color: var(--fg-faint);
+      letter-spacing: 0.03em;
+    }
+    .heart { color: var(--accent); }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: repeat(2, 1fr); gap: 4px; }
+      .gallery-head { align-items: flex-start; flex-direction: column-reverse; }
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <div class="wrap">
+      <header class="gallery-head">
+        <div class="gallery-title">
+          <h1>camera roll</h1>
+          <p>a photo helps us remember to remember</p>
+        </div>
+        <a class="back-link" href="index.html">back</a>
+      </header>
+
+      <!-- Write your caption between the <figcaption> tags. Leave empty to keep the space blank. -->
+      <div class="grid">
+        <figure class="tile">
+          <div class="tile-img"><img src="photos/01.jpg" alt="" loading="lazy"></div>
+          <figcaption>@chicago, IL</figcaption>
+        </figure>
+        <figure class="tile">
+          <div class="tile-img"><img src="photos/02.jpg" alt="" loading="lazy"></div>
+          <figcaption>@perfect north slopes, IN</figcaption>
+        </figure>
+        <figure class="tile">
+          <div class="tile-img"><img src="photos/03.jpg" alt="" loading="lazy"></div>
+          <figcaption>@billiards</figcaption>
+        </figure>
+        <figure class="tile">
+          <div class="tile-img"><img src="photos/04.jpg" alt="" loading="lazy"></div>
+          <figcaption>@stanford, CA</figcaption>
+        </figure>
+        <figure class="tile">
+          <div class="tile-img"><img src="photos/05.jpg" alt="" loading="lazy"></div>
+          <figcaption>@treehacks, CA</figcaption>
+        </figure>
+        <figure class="tile">
+          <div class="tile-img"><img src="photos/06.jpg" alt="" loading="lazy"></div>
+          <figcaption>@gym</figcaption>
+        </figure>
+        <figure class="tile">
+          <div class="tile-img"><img src="photos/07.jpg" alt="" loading="lazy"></div>
+          <figcaption>@sky</figcaption>
+        </figure>
+        <figure class="tile">
+          <div class="tile-img"><img src="photos/08.jpg" alt="" loading="lazy"></div>
+          <figcaption>@princeton, NJ</figcaption>
+        </figure>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>made with <span class="heart">♥</span></p>
+      <p>© <span id="year"></span> Micah Gao. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

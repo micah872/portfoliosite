@@ -7,9 +7,6 @@
   <meta name="description" content="micah gao. student, builder, skier.">
   <meta property="og:title" content="micah gao">
   <meta property="og:description" content="Self-taught developer. Business student. Skier, in that order depending on the snow.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Noto+Sans+SC:wght@300;400;500&display=swap">
   <style>
     :root {
       --bg: #fafafa;
@@ -24,6 +21,10 @@
       --section-y: clamp(48px, 7vh, 80px);
       --gap-tight: clamp(14px, 1.8vh, 22px);
       --gap-mid: clamp(20px, 2.6vh, 32px);
+      --prize: #22a06b;
+
+      --noise-opacity: 0.05;
+      --card-bg: rgba(255, 255, 255, 0.5);
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -33,8 +34,7 @@
     body {
       background: var(--bg);
       color: var(--fg);
-      font-family: 'Bricolage Grotesque', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
-      font-variation-settings: 'opsz' 14, 'wdth' 100;
+      font-family: 'Courier New', Courier, ui-monospace, monospace;
       font-size: clamp(16px, 1.05vw, 18px);
       line-height: 1.6;
       font-weight: 400;
@@ -44,7 +44,6 @@
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
-      position: relative;
     }
     body::before {
       content: '';
@@ -52,9 +51,29 @@
       inset: 0;
       pointer-events: none;
       z-index: 9999;
-      opacity: 0.05;
+      opacity: var(--noise-opacity);
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
     }
+    /* clock — fixed text in top-left */
+    .clock-pill {
+      position: fixed;
+      top: clamp(14px, 1.8vh, 22px);
+      left: clamp(14px, 2vw, 28px);
+      z-index: 1000;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: clamp(11px, 0.85vw, 13px);
+      color: var(--fg-soft);
+      letter-spacing: 0.06em;
+      font-variant-numeric: tabular-nums;
+    }
+    .clock-pill .clock-tz { color: var(--fg-faint); }
+    .clock-pill .colon {
+      padding: 0 1px;
+      animation: colon-blink 1s steps(1, start) infinite;
+    }
+    @keyframes colon-blink { 50% { opacity: 0.3; } }
 
     main { flex: 1 0 auto; }
     footer { flex-shrink: 0; }
@@ -78,7 +97,7 @@
     /* hero */
     .hero {
       position: relative;
-      padding-top: clamp(36px, 5vh, 64px);
+      padding-top: clamp(72px, 9vh, 108px);
       padding-bottom: clamp(40px, 6vh, 72px);
     }
     .hero-inner {
@@ -88,6 +107,22 @@
       padding-left: var(--gutter);
       padding-right: var(--gutter);
     }
+    .hero-nav {
+      position: absolute;
+      top: clamp(36px, 5vh, 64px);
+      right: var(--gutter);
+      font-size: clamp(13px, 1vw, 15px);
+      color: var(--fg-soft);
+      letter-spacing: 0.02em;
+      z-index: 2;
+    }
+    .hero-nav::after {
+      content: ' →';
+      color: var(--fg-faint);
+      transition: transform 0.2s ease;
+      display: inline-block;
+    }
+    .hero-nav:hover::after { transform: translateX(2px); }
 
     .greeting {
       display: block;
@@ -106,7 +141,6 @@
       letter-spacing: -0.025em;
       line-height: 1;
       min-height: 1em;
-      font-variation-settings: 'opsz' 96, 'wdth' 100, 'wght' 600;
     }
     .name .caret {
       display: inline-block;
@@ -119,9 +153,6 @@
     }
     @keyframes caret-blink {
       50% { opacity: 0; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .name .caret { animation: none; }
     }
 
     .headline {
@@ -147,11 +178,10 @@
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--fg-faint);
-      font-variation-settings: 'opsz' 14, 'wdth' 95, 'wght' 500;
     }
 
     /* about */
-    .about p {
+    .about p:not(.languages) {
       margin: 0;
       font-size: clamp(18px, 1.4vw, 22px);
       line-height: 1.55;
@@ -159,13 +189,13 @@
       color: var(--fg);
     }
     .languages {
-      margin: var(--gap-mid) 0 0 !important;
+      margin: var(--gap-mid) 0 0;
       display: flex;
       align-items: baseline;
       gap: clamp(14px, 2.4vw, 28px);
-      font-size: clamp(15px, 1.05vw, 17px) !important;
-      line-height: 1.5 !important;
-      color: var(--fg-soft) !important;
+      font-size: clamp(15px, 1.05vw, 17px);
+      line-height: 1.5;
+      color: var(--fg-soft);
       flex-wrap: wrap;
     }
     .languages .label {
@@ -176,13 +206,10 @@
       color: var(--fg-faint);
       flex-shrink: 0;
     }
-    @media (max-width: 600px) {
-      .languages { flex-direction: column; gap: 4px; }
-      .languages .label { width: auto; }
-    }
 
     /* projects */
     .project {
+      position: relative;
       padding: clamp(18px, 2vh, 26px) 0;
       border-top: 1px solid var(--line);
     }
@@ -196,7 +223,6 @@
       margin-bottom: 6px;
       flex-wrap: wrap;
     }
-    .project.featured { position: relative; }
     .project.featured::before {
       content: '';
       position: absolute;
@@ -204,7 +230,7 @@
       top: clamp(18px, 2vh, 26px);
       bottom: clamp(18px, 2vh, 26px);
       width: 2px;
-      background: var(--accent);
+      background: var(--prize);
     }
     .project-kicker {
       display: block;
@@ -214,8 +240,59 @@
       text-transform: uppercase;
       color: var(--accent);
       margin-bottom: 8px;
-      font-variation-settings: 'opsz' 12, 'wdth' 95, 'wght' 600;
     }
+    .project.featured .project-kicker { color: var(--prize); }
+    .project.featured .project-kicker .prize-amount {
+      color: inherit;
+      font-weight: inherit;
+    }
+
+    /* money rain inside featured card */
+    .project.featured .project-kicker,
+    .project.featured .project-head,
+    .project.featured > p {
+      position: relative;
+      z-index: 1;
+    }
+    .money-rain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .bill {
+      position: absolute;
+      top: -60px;
+      line-height: 1;
+      opacity: 0;
+      will-change: top, transform, opacity;
+      animation: bill-fall linear infinite;
+    }
+    .bill::before { content: '💵'; display: block; }
+    @keyframes bill-fall {
+      0%   { top: -60px;                 transform: rotate(-28deg); opacity: 0; }
+      10%  { opacity: 0.85; }
+      30%  { transform: rotate(22deg); }
+      55%  { transform: rotate(-18deg); }
+      80%  { transform: rotate(14deg); opacity: 0.85; }
+      100% { top: calc(100% + 50px);     transform: rotate(-10deg); opacity: 0; }
+    }
+    .bill-1  { left: 3%;  font-size: 30px; animation-duration: 5.4s; animation-delay: 0s;    }
+    .bill-2  { left: 11%; font-size: 22px; animation-duration: 7.2s; animation-delay: 1.1s;  }
+    .bill-3  { left: 19%; font-size: 34px; animation-duration: 6s;   animation-delay: 2.3s;  }
+    .bill-4  { left: 27%; font-size: 26px; animation-duration: 8s;   animation-delay: 0.5s;  }
+    .bill-5  { left: 36%; font-size: 32px; animation-duration: 5.7s; animation-delay: 3s;    }
+    .bill-6  { left: 44%; font-size: 24px; animation-duration: 7.4s; animation-delay: 1.7s;  }
+    .bill-7  { left: 52%; font-size: 30px; animation-duration: 6.5s; animation-delay: 0.3s;  }
+    .bill-8  { left: 60%; font-size: 22px; animation-duration: 8.6s; animation-delay: 2.6s;  }
+    .bill-9  { left: 68%; font-size: 36px; animation-duration: 5.9s; animation-delay: 1.4s;  }
+    .bill-10 { left: 76%; font-size: 28px; animation-duration: 7s;   animation-delay: 0.8s;  }
+    .bill-11 { left: 84%; font-size: 32px; animation-duration: 6.3s; animation-delay: 3.4s;  }
+    .bill-12 { left: 92%; font-size: 24px; animation-duration: 7.9s; animation-delay: 2.1s;  }
+    .bill-13 { left: 8%;  font-size: 26px; animation-duration: 6.7s; animation-delay: 4.2s;  }
+    .bill-14 { left: 56%; font-size: 34px; animation-duration: 5.5s; animation-delay: 4s;    }
+
     .project-title {
       font-size: clamp(20px, 1.7vw, 26px);
       font-weight: 500;
@@ -223,7 +300,7 @@
       border: 0;
     }
     a.project-title.linked {
-      background-image: linear-gradient(var(--accent), var(--accent));
+      background-image: linear-gradient(var(--fg), var(--fg));
       background-size: 0 1.5px;
       background-position: 0 100%;
       background-repeat: no-repeat;
@@ -240,7 +317,7 @@
       color: var(--fg-faint);
       transition: color 0.2s ease;
     }
-    a.project-title.linked:hover::after { color: var(--accent); }
+    a.project-title.linked:hover::after { color: var(--fg); }
     .project .year {
       font-size: clamp(12px, 0.85vw, 14px);
       color: var(--fg-faint);
@@ -254,20 +331,20 @@
       line-height: 1.55;
       max-width: 64ch;
     }
-    .project .stack { margin-top: 4px; }
     .stack {
+      margin-top: 4px;
       font-size: clamp(12px, 0.85vw, 14px);
       color: var(--fg-faint);
       letter-spacing: 0.03em;
     }
 
-    /* contact */
-    .contact ul {
+    /* contact + currently */
+    .contact ul, .currently ul {
       list-style: none;
       padding: 0;
       margin: 0;
     }
-    .contact li {
+    .contact li, .currently li {
       display: flex;
       align-items: baseline;
       gap: clamp(16px, 3vw, 40px);
@@ -275,14 +352,63 @@
       border-top: 1px solid var(--line);
       font-size: clamp(15px, 1.1vw, 17px);
     }
-    .contact li:last-child { border-bottom: 1px solid var(--line); }
-    .contact .label {
+    .contact li:last-child, .currently li:last-child { border-bottom: 1px solid var(--line); }
+    .contact .label, .currently .label {
       width: 100px;
       font-size: clamp(12px, 0.85vw, 14px);
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--fg-faint);
       flex-shrink: 0;
+    }
+
+    /* daily brainteaser */
+    .teaser-card {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: clamp(20px, 2.5vh, 28px);
+      background: var(--card-bg);
+      max-width: 720px;
+      transition: border-color 0.3s ease, background 0.3s ease;
+    }
+    .teaser-meta {
+      display: block;
+      font-size: clamp(11px, 0.8vw, 13px);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg-faint);
+      margin-bottom: 10px;
+      font-variant-numeric: tabular-nums;
+    }
+    .teaser-q {
+      margin: 0 0 16px;
+      font-size: clamp(16px, 1.2vw, 19px);
+      line-height: 1.5;
+      color: var(--fg);
+    }
+    .teaser-reveal {
+      background: transparent;
+      border: 1px solid var(--line);
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font: inherit;
+      color: var(--fg-soft);
+      letter-spacing: 0.12em;
+      font-size: clamp(11px, 0.8vw, 13px);
+      text-transform: uppercase;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .teaser-reveal:hover { color: var(--fg); border-color: var(--fg-soft); }
+    .teaser-a {
+      margin: 16px 0 0;
+      padding: 14px 16px;
+      background: transparent;
+      border-left: 2px solid var(--line);
+      color: var(--fg);
+      font-size: clamp(15px, 1.05vw, 17px);
+      line-height: 1.55;
+      border-radius: 0;
     }
 
     /* footer */
@@ -323,161 +449,47 @@
     .projects .project.reveal:nth-of-type(3) { transition-delay: 0.21s; }
     .projects .project.reveal:nth-of-type(4) { transition-delay: 0.29s; }
 
-    @media (prefers-reduced-motion: reduce) {
-      .reveal { opacity: 1; transform: none; transition: none; }
-      html { scroll-behavior: auto; }
-    }
-
-    /* skier */
-    .ski-scene {
-      position: relative;
-      height: 140px;
-      margin-top: clamp(20px, 3vh, 36px);
-      overflow: hidden;
-      pointer-events: none;
-      user-select: none;
-    }
-    .ski-mountains {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 28px;
-      width: 100%;
-      height: 110px;
-      pointer-events: none;
-    }
-    .mtn-back  { fill: #dde4ed; }
-    .mtn-mid   { fill: #b8c4d4; }
-    .mtn-front { fill: #8b9aae; }
-    .mtn-snow  { fill: #f4f6fa; }
-    .mtn-glow  { fill: #e8c8be; opacity: 0.55; }
-    .ski-slope {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 28px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent 0%, var(--line) 6%, var(--line) 94%, transparent 100%);
-    }
-    .ski-track {
-      position: absolute;
-      left: 0;
-      bottom: 28px;
-      animation: ski-across 12s linear infinite;
-    }
-    .skier {
-      position: relative;
-      width: 96px;
-      height: 64px;
-      animation: ski-bob 0.6s ease-in-out infinite alternate;
-    }
-    .skier-svg {
-      display: block;
-      width: 100%;
-      height: 100%;
-      overflow: visible;
-    }
-
-    /* trailing snow spray */
-    .spray {
-      position: absolute;
-      bottom: 2px;
-      left: 8px;
-      border-radius: 50%;
-      background: var(--fg-faint);
-      opacity: 0;
-      animation: spray-emit 0.7s ease-out infinite;
-    }
-    .spray-1 { width: 5px; height: 5px; animation-delay: 0s;     }
-    .spray-2 { width: 4px; height: 4px; animation-delay: 0.18s;  }
-    .spray-3 { width: 6px; height: 6px; animation-delay: 0.36s;  }
-    .spray-4 { width: 3px; height: 3px; animation-delay: 0.52s;  }
-
-    /* speed streaks behind skier */
-    .streak {
-      position: absolute;
-      height: 1px;
-      background: var(--fg-faint);
-      opacity: 0;
-      animation: streak-emit 0.85s ease-out infinite;
-    }
-    .streak-1 { bottom: 22px; left: 0;  animation-delay: 0.05s; }
-    .streak-2 { bottom: 34px; left: 4px; animation-delay: 0.4s;  }
-    .streak-3 { bottom: 14px; left: 2px; animation-delay: 0.65s; }
-
-    .flake {
-      position: absolute;
-      top: -12px;
-      color: var(--fg-faint);
-      font-size: 10px;
-      opacity: 0.5;
-      animation: flake-fall linear infinite;
-    }
-    .flake-1 { left: 14%; animation-duration: 8s;  animation-delay: 0s;   }
-    .flake-2 { left: 38%; animation-duration: 10s; animation-delay: 1.6s; font-size: 8px; }
-    .flake-3 { left: 62%; animation-duration: 9s;  animation-delay: 3.2s; }
-    .flake-4 { left: 84%; animation-duration: 11s; animation-delay: 2.4s; font-size: 7px; }
-    .flake-5 { left: 26%; animation-duration: 12s; animation-delay: 4.8s; font-size: 9px; }
-
-    @keyframes ski-across {
-      0%   { transform: translateX(-12%); opacity: 0; }
-      8%   { opacity: 1; }
-      92%  { opacity: 1; }
-      100% { transform: translateX(calc(100vw + 120px)); opacity: 0; }
-    }
-    @keyframes ski-bob {
-      0%   { translate: 0 0; }
-      100% { translate: 0 -2px; }
-    }
-    @keyframes spray-emit {
-      0%   { transform: translate(0, 0) scale(0.4); opacity: 0; }
-      18%  { opacity: 0.55; }
-      100% { transform: translate(-32px, -14px) scale(1.5); opacity: 0; }
-    }
-    @keyframes streak-emit {
-      0%   { width: 0;    opacity: 0;    transform: translateX(0); }
-      25%  { opacity: 0.4; }
-      100% { width: 32px; opacity: 0;    transform: translateX(-34px); }
-    }
-    @keyframes flake-fall {
-      0%   { transform: translateY(0)     translateX(0);   opacity: 0; }
-      10%  { opacity: 0.55; }
-      90%  { opacity: 0.55; }
-      100% { transform: translateY(120px) translateX(10px); opacity: 0; }
-    }
-
+    /* mobile */
     @media (max-width: 600px) {
-      .ski-scene { height: 110px; }
-      .skier { width: 78px; height: 52px; }
-      .ski-mountains { height: 80px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .ski-track, .skier, .spray, .streak, .flake { animation: none; }
-      .ski-track { transform: translateX(35%); }
-      .spray, .streak, .flake { display: none; }
-    }
-
-    /* mobile tightening */
-    @media (max-width: 600px) {
-      .contact li {
+      .contact li, .currently li {
         flex-direction: column;
         gap: 4px;
       }
-      .contact .label { width: auto; }
+      .contact .label, .currently .label { width: auto; }
+      .languages { flex-direction: column; gap: 4px; }
+      .languages .label { width: auto; }
       .project-head { gap: 8px; }
     }
 
-    /* really wide displays */
+    /* wide displays */
     @media (min-width: 1600px) {
       :root { --container: 1200px; }
+    }
+
+    /* reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .clock-pill .colon,
+      .name .caret,
+      .bill { animation: none; }
+      .bill { display: none; }
+      .reveal { opacity: 1; transform: none; transition: none; }
     }
   </style>
 </head>
 <body>
 
+  <div class="clock-pill" aria-label="Indianapolis local time">
+    <span class="clock-region">IN</span>
+    <span class="clock-time">
+      <span id="ck-h">--</span><span class="colon">:</span><span id="ck-m">--</span><span class="colon">:</span><span id="ck-s">--</span>
+    </span>
+    <span class="clock-tz" id="ck-tz">--</span>
+  </div>
+
   <main>
     <section class="hero" id="top">
+      <a class="hero-nav" href="gallery.html">camera roll</a>
       <div class="hero-inner">
         <span class="greeting" id="greeting">good morning.</span>
         <h1 class="name" aria-label="micah gao"><span id="name-text"></span><span class="caret" aria-hidden="true"></span></h1>
@@ -488,89 +500,25 @@
     <section class="about reveal" id="about">
       <div class="wrap">
         <h2>about</h2>
-        <p>I'm from Fishers, Indiana, studying accounting and finance at IU Kelley and grinding for the CPA. I got into coding freshman winter break by trying to clone YouTube in HTML and CSS, and it stuck. Most of my projects come out of hackathons/random ideas. Outside of that, mostly skiing and Korean dramas :P.</p>
+        <p>I'm from Fishers, Indiana, studying accounting and information technology at IU Kelley and grinding for the CPA. 
+          I got into coding during my freshman year winter break by trying to clone YouTube in HTML and CSS, and it stuck. 
+          I'm most passionate about the intersection of technology and business. Outside of that, mostly skiing and Korean dramas.</p>
         <p class="languages">
           <span class="label">languages</span>
           <span>Python · TypeScript · Swift · JavaScript</span>
         </p>
       </div>
+    </section>
 
-      <div class="ski-scene" aria-hidden="true">
-        <svg class="ski-mountains" viewBox="0 0 1200 110" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-          <defs>
-            <linearGradient id="sky-glow" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%"  stop-color="#f3d6cc" stop-opacity="0.6"/>
-              <stop offset="100%" stop-color="#f3d6cc" stop-opacity="0"/>
-            </linearGradient>
-          </defs>
-          <rect x="0" y="0" width="1200" height="80" fill="url(#sky-glow)"/>
-
-          <path class="mtn-back" d="M 0 110 L 60 58 L 130 78 L 200 42 L 270 70 L 340 36 L 410 64 L 480 48 L 560 72 L 640 38 L 720 60 L 800 50 L 880 70 L 960 36 L 1040 62 L 1120 44 L 1200 66 L 1200 110 Z"/>
-
-          <path class="mtn-mid" d="M 0 110 L 50 76 L 120 90 L 190 60 L 270 86 L 340 56 L 420 80 L 500 66 L 580 88 L 650 62 L 730 80 L 810 70 L 890 86 L 970 60 L 1050 80 L 1130 70 L 1200 84 L 1200 110 Z"/>
-
-          <path class="mtn-front" d="M 0 110 L 40 88 L 110 96 L 180 80 L 260 94 L 340 76 L 420 92 L 500 82 L 580 96 L 660 80 L 740 92 L 820 86 L 900 96 L 980 82 L 1060 94 L 1140 88 L 1200 94 L 1200 110 Z"/>
-
-          <!-- snowy peak caps on front range -->
-          <path class="mtn-snow" d="M 256 96 L 260 94 L 264 96 Z M 416 94 L 420 92 L 424 94 Z M 576 98 L 580 96 L 584 98 Z M 736 94 L 740 92 L 744 94 Z M 1056 96 L 1060 94 L 1064 96 Z"/>
-        </svg>
-        <div class="ski-slope"></div>
-
-        <div class="ski-track">
-          <div class="skier">
-            <span class="streak streak-1"></span>
-            <span class="streak streak-2"></span>
-            <span class="streak streak-3"></span>
-            <span class="spray spray-1"></span>
-            <span class="spray spray-2"></span>
-            <span class="spray spray-3"></span>
-            <span class="spray spray-4"></span>
-
-            <svg class="skier-svg" viewBox="0 0 100 64" xmlns="http://www.w3.org/2000/svg">
-              <path d="M 14 56 L 78 56 Q 85 56 88 53"
-                    stroke="#0a0a0a" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-
-              <line x1="60" y1="30" x2="38" y2="55"
-                    stroke="#777" stroke-width="0.9" stroke-linecap="round"/>
-
-              <polyline points="44,54 54,40 40,32"
-                        fill="none" stroke="#1c1c1c" stroke-width="4"
-                        stroke-linecap="round" stroke-linejoin="round"/>
-
-              <path d="M 40 32 Q 52 24 64 26"
-                    stroke="#c44545" stroke-width="9.5" stroke-linecap="round" fill="none"/>
-              <path d="M 40 34 Q 52 28 62 29"
-                    stroke="#8f2f2f" stroke-width="1.6" stroke-linecap="round"
-                    fill="none" opacity="0.7"/>
-
-              <polyline points="46,54 56,40 42,32"
-                        fill="none" stroke="#0d0d0d" stroke-width="4"
-                        stroke-linecap="round" stroke-linejoin="round"/>
-
-              <path d="M 60 27 L 70 30"
-                    stroke="#c44545" stroke-width="4.8" stroke-linecap="round" fill="none"/>
-              <circle cx="71" cy="30.5" r="2.2" fill="#1a1a1a"/>
-
-              <line x1="71" y1="30.5" x2="48" y2="55"
-                    stroke="#888" stroke-width="0.9" stroke-linecap="round"/>
-
-              <circle cx="68" cy="20" r="6" fill="#0a0a0a"/>
-              <path d="M 62.5 19 Q 68 17.5 73.5 18.8"
-                    stroke="#c44545" stroke-width="2" fill="none" stroke-linecap="round"/>
-              <circle cx="66" cy="19" r="0.9" fill="#fafafa" opacity="0.7"/>
-
-              <path d="M 18 52 L 82 52 Q 89 52 92 49"
-                    stroke="#0a0a0a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-              <rect x="46" y="50.5" width="6" height="2" fill="#c44545" rx="0.5"/>
-            </svg>
-          </div>
-        </div>
-
-        <span class="flake flake-1">❄</span>
-        <span class="flake flake-2">❄</span>
-        <span class="flake flake-3">❄</span>
-        <span class="flake flake-4">❄</span>
-        <span class="flake flake-5">❄</span>
+    <section class="currently reveal" id="currently">
+      <div class="wrap">
+        <h2>currently</h2>
+        <ul>
+          <li><span class="label">k-drama</span><span>Bloodhounds</span></li>
+          <li><span class="label">on snow</span><span>Copper Mountain</span></li>
+          <li><span class="label">hacking</span><span>UC Berkeley AI Hackathon</span></li>
+          <li><span class="label">reading</span><span>Naked Economics by Charles Wheelan</span></li>
+        </ul>
       </div>
     </section>
 
@@ -588,7 +536,23 @@
         </article>
 
         <article class="project reveal featured">
-          <span class="project-kicker">winner · regeneron grand prize · hackprinceton</span>
+          <div class="money-rain" aria-hidden="true">
+            <span class="bill bill-1"></span>
+            <span class="bill bill-2"></span>
+            <span class="bill bill-3"></span>
+            <span class="bill bill-4"></span>
+            <span class="bill bill-5"></span>
+            <span class="bill bill-6"></span>
+            <span class="bill bill-7"></span>
+            <span class="bill bill-8"></span>
+            <span class="bill bill-9"></span>
+            <span class="bill bill-10"></span>
+            <span class="bill bill-11"></span>
+            <span class="bill bill-12"></span>
+            <span class="bill bill-13"></span>
+            <span class="bill bill-14"></span>
+          </div>
+          <span class="project-kicker">winner · <span class="prize-amount">$1,000</span> · regeneron grand prize · hackprinceton</span>
           <div class="project-head">
             <span class="project-title">onkos</span>
             <span class="year">2026</span>
@@ -617,6 +581,18 @@
       </div>
     </section>
 
+    <section class="brainteaser reveal" id="brainteaser">
+      <div class="wrap">
+        <h2>daily brainteaser</h2>
+        <div class="teaser-card">
+          <span class="teaser-meta" id="teaser-date">loading</span>
+          <p class="teaser-q" id="teaser-q">loading...</p>
+          <button class="teaser-reveal" id="teaser-reveal" type="button">reveal answer</button>
+          <p class="teaser-a" id="teaser-a" hidden></p>
+        </div>
+      </div>
+    </section>
+
     <section class="contact reveal" id="contact">
       <div class="wrap">
         <h2>come say hi @</h2>
@@ -642,10 +618,10 @@
 
     function currentGreeting() {
       const h = new Date().getHours();
-      if (h >= 5  && h < 12) return 'good morning. 🌅';
-      if (h >= 12 && h < 17) return 'good afternoon. ☀️';
-      if (h >= 17 && h < 22) return 'good evening. 🌇';
-      if (h >= 22 || h < 2)  return 'up late? 🌙';
+      if (h >= 5  && h < 12) return 'good morning!';
+      if (h >= 12 && h < 17) return 'good afternoon!';
+      if (h >= 17 && h < 22) return 'good evening!';
+      if (h >= 22 || h < 2)  return 'up late?';
       return 'GO TO BED!!! 💤';
     }
 
@@ -694,6 +670,145 @@
     }, { threshold: 0.12 });
 
     document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+    /* Indianapolis clock — updates every second */
+    (function clock() {
+      const fmt = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/Indiana/Indianapolis',
+        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
+        timeZoneName: 'short'
+      });
+      const hEl = document.getElementById('ck-h');
+      const mEl = document.getElementById('ck-m');
+      const sEl = document.getElementById('ck-s');
+      const tzEl = document.getElementById('ck-tz');
+      function get(parts, t) {
+        const p = parts.find((x) => x.type === t);
+        return p ? p.value : '--';
+      }
+      function tick() {
+        const parts = fmt.formatToParts(new Date());
+        let hr = get(parts, 'hour');
+        if (hr === '24') hr = '00';
+        hEl.textContent = hr;
+        mEl.textContent = get(parts, 'minute');
+        sEl.textContent = get(parts, 'second');
+        tzEl.textContent = get(parts, 'timeZoneName');
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+
+    /* daily brainteaser — deterministic per Indianapolis date */
+    (function brainteaser() {
+      const teasers = [
+        { q: "A bat and a ball cost $1.10 in total. The bat costs $1.00 more than the ball. How much does the ball cost?", a: "5 cents. If the ball were $0.10 the bat would be $1.10, totaling $1.20. At $0.05 the bat is $1.05, totaling $1.10." },
+        { q: "If it takes 5 machines 5 minutes to make 5 widgets, how long would it take 100 machines to make 100 widgets?", a: "5 minutes. Each machine still makes one widget in 5 minutes regardless of fleet size." },
+        { q: "A patch of lily pads doubles every day. If it covers the whole lake on day 48, on what day was it half-covered?", a: "Day 47. It doubles each day, so it was half-sized the day before it filled the lake." },
+        { q: "A man lives on the 10th floor. Each morning he rides the elevator down. Coming home he rides to the 7th floor and walks, except on rainy days when he rides all the way to the 10th. Why?", a: "He is too short to reach the 10th-floor button. On rainy days he uses his umbrella to press it." },
+        { q: "Two ropes each burn for exactly 60 minutes but unevenly. How do you measure exactly 45 minutes?", a: "Light rope A on both ends and rope B on one end at the same time. When A finishes (30 min), light B's other end. B finishes 15 minutes later for 45 total." },
+        { q: "Three switches outside a closed room each control one bulb inside. You can enter the room only once. How do you tell which switch is which?", a: "Turn switch 1 on for several minutes, then off. Turn switch 2 on. Enter: lit = 2, warm but off = 1, cold and off = 3." },
+        { q: "Three friends pay $30 for a hotel room. The clerk realizes it should be $25 and sends $5 back with a bellboy who keeps $2 and gives each friend $1. So each paid $9 ($27), plus the bellboy's $2 is $29. Where is the missing dollar?", a: "Nowhere. The $27 paid equals the $25 room plus the $2 the bellboy kept. Adding the bellboy's $2 to the $27 is double counting." },
+        { q: "A snail climbs a 10-foot pole. It climbs 3 feet by day and slides 2 feet down at night. How many days to reach the top?", a: "8 days. After 7 days it has 7 feet (net 1 per day). On day 8 it climbs 3 more feet to the top before sliding." },
+        { q: "A clock loses 5 minutes per hour. If set correctly at noon, what time will it show at the actual time 6:00 PM?", a: "5:30 PM. In 6 real hours it only advances 6 x 55 = 330 minutes." },
+        { q: "Two trains are 60 miles apart, traveling toward each other at 30 mph each. A bird flies at 60 mph between them until they meet. How far does the bird fly?", a: "60 miles. The trains meet in 1 hour, and the bird flies at 60 mph for that full hour." },
+        { q: "A man pushes his car up to a hotel and immediately tells the owner he is bankrupt. Why?", a: "He is playing Monopoly." },
+        { q: "A truck driver goes the wrong way down a one-way street and passes a cop who doesn't stop him. Why not?", a: "He is walking, not driving." },
+        { q: "Two fathers and two sons go fishing. Each catches one fish, and they come home with three. How?", a: "There are only three people: grandfather, father, and son. The middle one is both a son and a father." },
+        { q: "A man builds a house with all four walls facing south. A bear walks by. What color is the bear?", a: "White. The house is at the North Pole, so the bear is a polar bear." },
+        { q: "A drawer holds 10 black and 10 white socks. In the dark, how many must you pull out to guarantee a matching pair?", a: "3. With only two colors, the third sock must match one of the first two." },
+        { q: "Two doors: one leads to freedom, one to death. Two guards: one always lies, one always tells the truth, and you don't know which is which. You may ask one guard one question. What do you ask?", a: "Ask either guard: 'Which door would the other guard say leads to freedom?' Then take the opposite door." },
+        { q: "With a 3-gallon jug and a 5-gallon jug, measure exactly 4 gallons.", a: "Fill the 5 and pour into the 3 (leaving 2 in the 5). Empty the 3, pour the 2 in. Refill the 5, pour into the 3-jug until full (which only takes 1 more). The 5-jug now holds exactly 4." },
+        { q: "What has keys but cannot open any locks?", a: "A piano." },
+        { q: "The more you take, the more you leave behind. What are they?", a: "Footsteps." },
+        { q: "What can travel around the world while staying in the same corner?", a: "A postage stamp." },
+        { q: "What gets wetter the more it dries?", a: "A towel." },
+        { q: "I have cities but no houses, mountains but no trees, water but no fish. What am I?", a: "A map." },
+        { q: "The poor have it, the rich need it, and if you eat it, you die. What is it?", a: "Nothing." },
+        { q: "What is so fragile that saying its name breaks it?", a: "Silence." },
+        { q: "I speak without a mouth and hear without ears. I have no body but come alive with the wind. What am I?", a: "An echo." },
+        { q: "A clock strikes 6 in 5 seconds. How long does it take to strike 12?", a: "11 seconds. Six strikes have 5 intervals (1 second each). Twelve strikes have 11 intervals." },
+        { q: "You have 100 coins: 10 heads up, 90 tails up. Blindfolded, split them into two piles with equal numbers of heads.", a: "Take any 10 coins for a new pile and flip all 10. Both piles now have the same number of heads." },
+        { q: "Eight balls look identical but one is heavier. With a balance scale and 2 weighings, find the heavy ball.", a: "Weigh 3 vs. 3. If balanced, weigh the remaining 2. If unbalanced, take the heavier group of 3 and weigh any 2; the lone one (or the heavier of the two) is your ball." },
+        { q: "Two coins add up to 30 cents and one of them is not a nickel. What are they?", a: "A quarter and a nickel. The quarter is the one that is not a nickel; the OTHER one is." },
+        { q: "What goes up but never comes down?", a: "Your age." }
+      ];
+      teasers.push(
+        { q: "If two's company and three's a crowd, what are four and five?", a: "Nine." },
+        { q: "A grandfather, two fathers, and two sons go to a movie and buy three tickets total. How?", a: "Three people: grandfather, his son (also a father), and his grandson." },
+        { q: "I'm tall when I'm young and short when I'm old. What am I?", a: "A candle." },
+        { q: "What has hands but cannot clap?", a: "A clock." },
+        { q: "What has a head and a tail but no body?", a: "A coin." },
+        { q: "Forward I'm heavy, backward I'm not. What am I?", a: "The word 'ton'. Reversed it spells 'not'." },
+        { q: "A monk climbs a mountain at varying paces from dawn to dusk. The next day he descends, also dawn to dusk. Must there be a point he occupies at the same time of day on both days?", a: "Yes. Imagine both walks happening on the same day: the two versions of the monk must meet somewhere on the path." },
+        { q: "What five-letter word becomes shorter when you add two letters to it?", a: "Short. Add 'er' to get 'shorter'." },
+        { q: "If you have me, you want to share me. If you share me, you don't have me. What am I?", a: "A secret." },
+        { q: "What can fill a room but takes up no space?", a: "Light." },
+        { q: "A man looks at a photograph and says, 'Brothers and sisters I have none, but that man's father is my father's son.' Whose picture is it?", a: "His son's." },
+        { q: "Five apples are in a basket. How do you divide them among five people so each gets one apple and one remains in the basket?", a: "Give the fifth person the basket with the last apple still inside." },
+        { q: "How many times can you subtract 10 from 100?", a: "Once. After that you would be subtracting from 90." },
+        { q: "A father is four times as old as his son. In 20 years he will be twice as old. How old are they now?", a: "Father 40, son 10. In 20 years: 60 and 30." },
+        { q: "Which is heavier: a pound of feathers or a pound of bricks?", a: "Neither. They both weigh one pound." },
+        { q: "In a race you pass the person in 2nd place. What place are you in?", a: "2nd place. You took their position, not 1st." },
+        { q: "A boy bets a carnival man $50 that he can't write the boy's exact weight on a piece of paper. The boy sees no scale, takes the bet, and loses. Why?", a: "The man wrote the words 'your exact weight' on the paper." },
+        { q: "Everything in a one-story house is yellow: walls, doors, furniture. What color are the stairs?", a: "There are no stairs. It is a one-story house." },
+        { q: "Three doctors say Robert is their brother. Robert says he has no brothers. Who is lying?", a: "Nobody. The three doctors are Robert's sisters." },
+        { q: "A girl has as many brothers as sisters, but each brother has only half as many brothers as sisters. How many of each are there?", a: "Four sisters and three brothers." },
+        { q: "What's full of holes but still holds water?", a: "A sponge." },
+        { q: "What word, if pronounced right, is wrong, but if pronounced wrong, is right?", a: "The word 'wrong'." },
+        { q: "If a plane crashes exactly on the US-Canada border, where do you bury the survivors?", a: "You don't bury survivors." },
+        { q: "A man is found dead alone in the middle of a field with an unopened package beside him and no footprints around. How did he die?", a: "His parachute failed to open." },
+        { q: "What can you catch but not throw?", a: "A cold." },
+        { q: "Mary's father has five daughters: Nana, Nene, Nini, and Nono. What is the fifth daughter's name?", a: "Mary." },
+        { q: "A man asks the bartender for a glass of water. The bartender pulls out a gun and points it at him. The man says 'thank you' and walks out. Why?", a: "He had the hiccups. The shock cured them, so he no longer needed the water." },
+        { q: "A chessboard's two opposite-corner squares are removed. Can you cover the remaining 62 squares with 31 dominoes (each covering two adjacent squares)?", a: "No. The two removed corners share a color. Each domino covers one of each color, so 31 dominoes would need 31 of each color, but the board now has 32 of one and 30 of the other." },
+        { q: "How can 4 be half of 5?", a: "IV is the top half of V in Roman numerals." },
+        { q: "Cross a river with a wolf, a goat, and a cabbage. The boat fits only you and one item. The wolf eats the goat alone; the goat eats the cabbage alone. How do you get all three across?", a: "Take the goat over. Return alone. Take the wolf over and return with the goat. Take the cabbage over. Return alone, then take the goat over." },
+        { q: "What can run but never walks, has a mouth but never talks, has a head but never weeps, has a bed but never sleeps?", a: "A river." },
+        { q: "I have branches but no fruit, trunk, or leaves. What am I?", a: "A bank." },
+        { q: "If you drop me I'm sure to crack, but smile at me and I'll smile back. What am I?", a: "A mirror." },
+        { q: "A boy fell off a 20-foot ladder but wasn't hurt. How?", a: "He fell from the bottom rung." },
+        { q: "An odometer reads 12,321, a palindrome. What's the minimum miles before it shows another palindrome?", a: "100 miles. The next five-digit palindrome is 12,421." },
+        { q: "Nine identical coins, one is counterfeit and lighter. Find the fake with only 2 weighings on a balance scale.", a: "Split into three groups of 3 and weigh A vs B. If balanced, fake is in C. Otherwise it's in the lighter pan. Then weigh two coins of that group; if balanced, the third is fake." },
+        { q: "What has 13 hearts but no organs?", a: "A deck of cards." },
+        { q: "A prisoner is offered a bag with two beans. White = freedom, black = death. He knows the warden rigged it with two black beans. How does he escape death?", a: "He draws one bean and swallows it without looking. The remaining bean is black, which 'proves' he must have drawn the white one." },
+        { q: "I have keys but no locks, space but no rooms. You can enter but not go outside. What am I?", a: "A keyboard." },
+        { q: "A man is born in 1955 and dies in 1955 at age 60. How?", a: "1955 is a room number, not a year." }
+      );
+
+      function hashStr(s) {
+        let h = 2166136261 >>> 0;
+        for (let i = 0; i < s.length; i++) {
+          h ^= s.charCodeAt(i);
+          h = Math.imul(h, 16777619);
+        }
+        return h >>> 0;
+      }
+
+      const dateKey = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'America/Indiana/Indianapolis',
+        year: 'numeric', month: '2-digit', day: '2-digit'
+      }).format(new Date());
+
+      const dateNice = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/Indiana/Indianapolis',
+        weekday: 'long', month: 'long', day: 'numeric'
+      }).format(new Date());
+
+      const idx = hashStr(dateKey) % teasers.length;
+      const t = teasers[idx];
+
+      document.getElementById('teaser-date').textContent = dateNice;
+      document.getElementById('teaser-q').textContent = t.q;
+      document.getElementById('teaser-a').textContent = t.a;
+
+      const btn = document.getElementById('teaser-reveal');
+      const ans = document.getElementById('teaser-a');
+      btn.addEventListener('click', () => {
+        ans.hidden = false;
+        btn.hidden = true;
+      });
+    })();
   </script>
 </body>
 </html>
