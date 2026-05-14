@@ -7,6 +7,7 @@
   <meta name="description" content="micah gao. student, builder, skier.">
   <meta property="og:title" content="micah gao">
   <meta property="og:description" content="Self-taught developer. Business student. Skier, in that order depending on the snow.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='3' y='3' width='58' height='58' fill='%23f5f5f5' stroke='%230a0a0a' stroke-width='4'/><text x='32' y='49' font-family='Courier New, Courier, monospace' font-size='52' font-weight='700' text-anchor='middle' fill='%230a0a0a'>m</text></svg>">
   <style>
     :root {
       --bg: #fafafa;
@@ -29,6 +30,7 @@
 
     *, *::before, *::after { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
+    html, body { overflow-x: hidden; }
     html { scroll-behavior: smooth; }
 
     body {
@@ -54,19 +56,16 @@
       opacity: var(--noise-opacity);
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
     }
-    /* clock — fixed text in top-left */
+    /* clock — sits in the top-right meta block, scrolls with hero */
     .clock-pill {
-      position: fixed;
-      top: clamp(36px, 5vh, 64px);
-      left: var(--gutter);
-      z-index: 1000;
       display: inline-flex;
-      align-items: center;
+      align-items: baseline;
       gap: 10px;
-      font-size: clamp(13px, 1vw, 15px);
+      font-size: clamp(15px, 1.25vw, 18px);
       color: var(--fg-soft);
       letter-spacing: 0.02em;
       font-variant-numeric: tabular-nums;
+      white-space: nowrap;
     }
     .clock-pill .clock-tz { color: var(--fg-faint); }
     .clock-pill .colon {
@@ -97,7 +96,7 @@
     /* hero */
     .hero {
       position: relative;
-      padding-top: clamp(72px, 9vh, 108px);
+      padding-top: max(clamp(72px, 9vh, 108px), calc(env(safe-area-inset-top, 0px) + 96px));
       padding-bottom: clamp(40px, 6vh, 72px);
     }
     .hero-inner {
@@ -107,14 +106,21 @@
       padding-left: var(--gutter);
       padding-right: var(--gutter);
     }
-    .hero-nav {
+    /* top-right meta: camera roll + clock, anchored to hero (does not follow scroll) */
+    .hero-top-right {
       position: absolute;
-      top: clamp(36px, 5vh, 64px);
-      right: var(--gutter);
-      font-size: clamp(13px, 1vw, 15px);
+      top: max(clamp(36px, 5vh, 64px), calc(env(safe-area-inset-top, 0px) + 16px));
+      right: max(var(--gutter), calc(env(safe-area-inset-right, 0px) + var(--gutter)));
+      z-index: 2;
+      display: flex;
+      align-items: baseline;
+      gap: clamp(14px, 2vw, 24px);
+    }
+    .hero-nav {
+      font-size: clamp(15px, 1.25vw, 18px);
       color: var(--fg-soft);
       letter-spacing: 0.02em;
-      z-index: 2;
+      white-space: nowrap;
     }
     .hero-nav::after {
       content: ' →';
@@ -123,6 +129,25 @@
       display: inline-block;
     }
     .hero-nav:hover::after { transform: translateX(2px); }
+
+    /* top-left logo, also scrolls with hero */
+    .hero-logo {
+      position: absolute;
+      top: max(clamp(28px, 4.2vh, 56px), calc(env(safe-area-inset-top, 0px) + 12px));
+      left: max(var(--gutter), calc(env(safe-area-inset-left, 0px) + var(--gutter)));
+      z-index: 2;
+      color: var(--fg);
+      border: 0;
+      display: inline-flex;
+      line-height: 0;
+      transition: opacity 0.2s ease;
+    }
+    .hero-logo:hover { opacity: 0.6; }
+    .hero-logo svg {
+      display: block;
+      width: clamp(30px, 3.2vw, 40px);
+      height: clamp(30px, 3.2vw, 40px);
+    }
 
     .greeting {
       display: block;
@@ -459,7 +484,6 @@
       .languages { flex-direction: column; gap: 4px; }
       .languages .label { width: auto; }
       .project-head { gap: 8px; }
-      .clock-pill { position: absolute; }
     }
 
     /* wide displays */
@@ -480,17 +504,24 @@
 </head>
 <body>
 
-  <div class="clock-pill" aria-label="Indianapolis local time">
-    <span class="clock-region">IN</span>
-    <span class="clock-time">
-      <span id="ck-h">--</span><span class="colon">:</span><span id="ck-m">--</span><span class="colon">:</span><span id="ck-s">--</span>
-    </span>
-    <span class="clock-tz" id="ck-tz">--</span>
-  </div>
-
   <main>
     <section class="hero" id="top">
-      <a class="hero-nav" href="gallery.html">camera roll</a>
+      <a class="hero-logo" href="#top" aria-label="home">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <rect x="3" y="3" width="58" height="58" fill="none" stroke="currentColor" stroke-width="4"/>
+          <text x="32" y="49" font-family="'Courier New', Courier, monospace" font-size="52" font-weight="700" text-anchor="middle" fill="currentColor">m</text>
+        </svg>
+      </a>
+      <div class="hero-top-right">
+        <a class="hero-nav" href="gallery.html">camera roll</a>
+        <div class="clock-pill" aria-label="Indianapolis local time">
+          <span class="clock-region">IN</span>
+          <span class="clock-time">
+            <span id="ck-h">--</span><span class="colon">:</span><span id="ck-m">--</span><span class="colon">:</span><span id="ck-s">--</span>
+          </span>
+          <span class="clock-tz">EDT</span>
+        </div>
+      </div>
       <div class="hero-inner">
         <span class="greeting" id="greeting">good morning.</span>
         <h1 class="name" aria-label="micah gao"><span id="name-text"></span><span class="caret" aria-hidden="true"></span></h1>
@@ -503,7 +534,7 @@
         <h2>about</h2>
         <p>I'm a Chinese-American from Fishers, IN, studying accounting and information systems at IU Kelley (Class of 2028). 
           I got into coding freshman-year winter break trying to clone YouTube in HTML and CSS. 
-          I'm most curious about AI agents, fintech, and applied ML, usually expressed as side projects that ship before they're ready.
+          I'm most curious about AI agents, fintech, and applied ML.
 Outside of building stuff: lifting, Clash Royale, and a lot of music. My favorite food is 牛肉麵 (beef noodle soup) and my favorite place I've ever traveled is Chongqing.</p>
         <p class="languages">
           <span class="label">languages</span>
@@ -677,13 +708,11 @@ Outside of building stuff: lifting, Clash Royale, and a lot of music. My favorit
     (function clock() {
       const fmt = new Intl.DateTimeFormat('en-US', {
         timeZone: 'America/Indiana/Indianapolis',
-        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
-        timeZoneName: 'short'
+        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
       });
       const hEl = document.getElementById('ck-h');
       const mEl = document.getElementById('ck-m');
       const sEl = document.getElementById('ck-s');
-      const tzEl = document.getElementById('ck-tz');
       function get(parts, t) {
         const p = parts.find((x) => x.type === t);
         return p ? p.value : '--';
@@ -695,7 +724,6 @@ Outside of building stuff: lifting, Clash Royale, and a lot of music. My favorit
         hEl.textContent = hr;
         mEl.textContent = get(parts, 'minute');
         sEl.textContent = get(parts, 'second');
-        tzEl.textContent = get(parts, 'timeZoneName');
       }
       tick();
       setInterval(tick, 1000);
