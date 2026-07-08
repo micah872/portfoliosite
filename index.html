@@ -4,28 +4,65 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>micah gao</title>
-  <meta name="description" content="micah gao. student, builder, skier.">
+  <meta name="description" content="micah gao. self-taught developer, informatics + accounting at IU. regeneron grand prize winner, uc berkeley ai hackathon finalist.">
   <meta property="og:title" content="micah gao">
   <meta property="og:description" content="Self-taught developer. Business student. Skier, in that order depending on the snow.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='3' y='3' width='58' height='58' fill='%23f5f5f5' stroke='%230a0a0a' stroke-width='4'/><text x='32' y='49' font-family='Courier New, Courier, monospace' font-size='52' font-weight='700' text-anchor='middle' fill='%230a0a0a'>m</text></svg>">
+  <script>
+    /* set theme before first paint to avoid flash */
+    (function () {
+      var t = localStorage.getItem('theme');
+      if (t !== 'light' && t !== 'dark') t = 'dark';
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
   <style>
     :root {
-      --bg: #fafafa;
-      --fg: #0a0a0a;
-      --fg-soft: #555;
-      --fg-faint: #999;
-      --line: #e5e5e5;
-      --accent: #c44545;
+      /* dark (default) */
+      --bg: #0f0f0d;
+      --fg: #f0eee8;
+      --fg-soft: #a8a49a;
+      --fg-faint: #6b675e;
+      --line: #262420;
+      --accent: #e06055;
+      --prize: #34b47e;
+      --gold: #d9a648;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --row-hover: rgba(255, 255, 255, 0.045);
+      --term-screen: #141310;
+      --chrome-a: #35312b;
+      --chrome-b: #2b2823;
+      --chrome-line: #1d1a15;
+      --chrome-title: #b7b1a4;
+      --term-shadow: rgba(0, 0, 0, 0.5);
+      --noise-opacity: 0.07;
+      color-scheme: dark;
 
       --container: 1080px;
       --gutter: clamp(24px, 5vw, 64px);
       --section-y: clamp(48px, 7vh, 80px);
       --gap-tight: clamp(14px, 1.8vh, 22px);
       --gap-mid: clamp(20px, 2.6vh, 32px);
+    }
+    :root[data-theme="light"] {
+      --bg: #fafafa;
+      --fg: #0a0a0a;
+      --fg-soft: #555;
+      --fg-faint: #999;
+      --line: #e5e5e5;
+      --accent: #c44545;
       --prize: #22a06b;
-
-      --noise-opacity: 0.05;
+      --gold: #a97c1f;
       --card-bg: rgba(255, 255, 255, 0.5);
+      --row-hover: rgba(0, 0, 0, 0.04);
+      --term-screen: #ffffff;
+      --chrome-a: #ebe8e2;
+      --chrome-b: #dbd7cf;
+      --chrome-line: #c8c4bb;
+      --chrome-title: #625d54;
+      --term-shadow: rgba(0, 0, 0, 0.16);
+      --noise-opacity: 0.05;
+      color-scheme: light;
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -46,6 +83,8 @@
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
+      padding-top: 44px; /* reserve the ski-rail lane */
+      transition: background 0.3s ease, color 0.3s ease;
     }
     body::before {
       content: '';
@@ -56,6 +95,59 @@
       opacity: var(--noise-opacity);
       background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
     }
+
+    ::selection { background: var(--accent); color: var(--bg); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+    /* scroll skier — a fixed rail at the top; replaces the progress bar */
+    #skitrack {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 44px;
+      z-index: 500;
+      pointer-events: none;
+      overflow: hidden;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+    }
+    #skitrack .snowline {
+      position: absolute;
+      left: 0; right: 0;
+      bottom: 5px;
+      height: 1px;
+      background: var(--fg-faint);
+      opacity: 0.28;
+    }
+    .skier {
+      position: absolute;
+      bottom: 4px;
+      left: 0;
+      transform: translateX(0);
+      will-change: transform;
+    }
+    .skier-sprite {
+      display: block;
+      width: 46px;
+      height: auto;
+      transform-origin: center bottom;
+      animation: ski-bob 0.42s steps(2, jump-none) infinite;
+    }
+    .skier-sprite svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      image-rendering: pixelated;
+    }
+    @keyframes ski-bob {
+      0%   { transform: translateY(0); }
+      100% { transform: translateY(-1.5px); }
+    }
+    .skier .spray { animation: spray-flicker 0.34s steps(2) infinite; }
+    @keyframes spray-flicker {
+      0%, 100% { opacity: 0.85; }
+      50%      { opacity: 0.2; }
+    }
+
     /* clock — sits in the top-right meta block, scrolls with hero */
     .clock-pill {
       display: inline-flex;
@@ -96,22 +188,32 @@
     /* hero */
     .hero {
       position: relative;
-      padding-top: max(clamp(72px, 9vh, 108px), calc(env(safe-area-inset-top, 0px) + 96px));
-      padding-bottom: clamp(40px, 6vh, 72px);
+      padding-top: clamp(16px, 2.4vh, 26px);
+      padding-bottom: clamp(48px, 7vh, 80px);
     }
     .hero-inner {
+      position: relative;
       width: 100%;
       max-width: var(--container);
       margin: 0 auto;
       padding-left: var(--gutter);
       padding-right: var(--gutter);
     }
-    /* top-right meta: camera roll + clock, anchored to hero (does not follow scroll) */
+    /* top chrome — logo + meta as a real header band in normal flow; shares
+       the content column width and sets its own gap before the name block */
+    .hero-chrome {
+      width: 100%;
+      max-width: var(--container);
+      margin: 0 auto clamp(44px, 8vh, 76px);
+      padding: 0 var(--gutter);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    /* top-right meta: camera roll + clock + theme */
     .hero-top-right {
-      position: absolute;
-      top: max(clamp(36px, 5vh, 64px), calc(env(safe-area-inset-top, 0px) + 16px));
-      right: max(var(--gutter), calc(env(safe-area-inset-right, 0px) + var(--gutter)));
-      z-index: 2;
       display: flex;
       align-items: baseline;
       gap: clamp(14px, 2vw, 24px);
@@ -130,12 +232,23 @@
     }
     .hero-nav:hover::after { transform: translateX(2px); }
 
-    /* top-left logo, also scrolls with hero */
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 3px 12px;
+      font: inherit;
+      font-size: clamp(13px, 1vw, 15px);
+      color: var(--fg-soft);
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .theme-toggle:hover { color: var(--fg); border-color: var(--fg-faint); }
+
+    /* top-left logo */
     .hero-logo {
-      position: absolute;
-      top: max(clamp(28px, 4.2vh, 56px), calc(env(safe-area-inset-top, 0px) + 12px));
-      left: max(var(--gutter), calc(env(safe-area-inset-left, 0px) + var(--gutter)));
-      z-index: 2;
       color: var(--fg);
       border: 0;
       display: inline-flex;
@@ -149,23 +262,13 @@
       height: clamp(30px, 3.2vw, 40px);
     }
 
-    .greeting {
-      display: block;
-      font-size: clamp(13px, 1vw, 16px);
-      font-weight: 400;
-      letter-spacing: 0.04em;
-      color: var(--fg-faint);
-      margin-bottom: var(--gap-tight);
-      text-transform: lowercase;
-    }
-
     .name {
-      margin: 0 0 var(--gap-tight);
-      font-size: clamp(32px, 7vw, 80px);
+      margin: 0 0 var(--gap-mid);
+      font-size: clamp(28px, 4.6vw, 54px);
       font-weight: 600;
-      letter-spacing: -0.025em;
-      line-height: 1;
-      min-height: 1em;
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+      min-height: 1.1em;
     }
     .name .caret {
       display: inline-block;
@@ -188,6 +291,22 @@
       line-height: 1.5;
     }
 
+    /* hero section index */
+    .hero-index {
+      margin-top: clamp(24px, 3.4vh, 40px);
+      display: flex;
+      flex-wrap: wrap;
+      gap: clamp(14px, 2.4vw, 30px);
+      font-size: clamp(13px, 0.95vw, 15px);
+      letter-spacing: 0.03em;
+    }
+    .hero-index a {
+      border: 0;
+      color: var(--fg-soft);
+      transition: color 0.2s ease;
+    }
+    .hero-index a:hover { color: var(--accent); opacity: 1; }
+
     /* sections */
     section {
       padding-top: var(--section-y);
@@ -206,14 +325,14 @@
     }
 
     /* about */
-    .about p:not(.languages) {
+    .about p:not(.meta-row) {
       margin: 0;
       font-size: clamp(18px, 1.4vw, 22px);
       line-height: 1.55;
       max-width: 56ch;
       color: var(--fg);
     }
-    .languages {
+    .meta-row {
       margin: var(--gap-mid) 0 0;
       display: flex;
       align-items: baseline;
@@ -223,13 +342,56 @@
       color: var(--fg-soft);
       flex-wrap: wrap;
     }
-    .languages .label {
+    .meta-row + .meta-row { margin-top: clamp(8px, 1.2vh, 14px); }
+    .meta-row .label {
       width: 100px;
       font-size: clamp(12px, 0.85vw, 14px);
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--fg-faint);
       flex-shrink: 0;
+    }
+
+    /* experience */
+    .role {
+      position: relative;
+      padding: clamp(20px, 2.4vh, 30px) 0;
+      border-top: 1px solid var(--line);
+    }
+    .role:last-of-type { border-bottom: 1px solid var(--line); }
+    .role-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+    .role-title {
+      margin: 0;
+      font-size: clamp(19px, 1.6vw, 25px);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+    .role-dates {
+      font-size: clamp(12px, 0.85vw, 14px);
+      color: var(--fg-faint);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .role-org {
+      margin: 0 0 10px;
+      font-size: clamp(13px, 0.95vw, 15px);
+      color: var(--fg-faint);
+      letter-spacing: 0.03em;
+    }
+    .role p.role-desc {
+      margin: 0;
+      color: var(--fg-soft);
+      font-size: clamp(15px, 1.05vw, 17px);
+      line-height: 1.55;
+      max-width: 66ch;
     }
 
     /* projects */
@@ -257,6 +419,15 @@
       width: 2px;
       background: var(--prize);
     }
+    .project.flagship::before {
+      content: '';
+      position: absolute;
+      left: clamp(-16px, -1.2vw, -10px);
+      top: clamp(18px, 2vh, 26px);
+      bottom: clamp(18px, 2vh, 26px);
+      width: 2px;
+      background: var(--gold);
+    }
     .project-kicker {
       display: block;
       font-size: clamp(10px, 0.75vw, 12px);
@@ -267,15 +438,19 @@
       margin-bottom: 8px;
     }
     .project.featured .project-kicker { color: var(--prize); }
+    .project.flagship .project-kicker { color: var(--gold); }
     .project.featured .project-kicker .prize-amount {
       color: inherit;
       font-weight: inherit;
     }
 
-    /* money rain inside featured card */
+    /* emoji rain inside prize cards */
     .project.featured .project-kicker,
     .project.featured .project-head,
-    .project.featured > p {
+    .project.featured > p,
+    .project.flagship .project-kicker,
+    .project.flagship .project-head,
+    .project.flagship > p {
       position: relative;
       z-index: 1;
     }
@@ -295,6 +470,7 @@
       animation: bill-fall linear infinite;
     }
     .bill::before { content: '💵'; display: block; }
+    .money-rain.trophies .bill::before { content: '🏆'; }
     @keyframes bill-fall {
       0%   { top: -60px;                 transform: rotate(-28deg); opacity: 0; }
       10%  { opacity: 0.85; }
@@ -363,6 +539,129 @@
       letter-spacing: 0.03em;
     }
 
+    /* honors — macOS terminal window */
+    .term {
+      position: relative;
+      border: 1px solid var(--chrome-line);
+      border-radius: 11px;
+      background: var(--term-screen);
+      overflow: hidden;
+      max-width: 860px;
+      box-shadow:
+        0 1px 1px rgba(0, 0, 0, 0.05),
+        0 14px 30px -10px var(--term-shadow),
+        0 42px 64px -34px var(--term-shadow);
+    }
+    .term::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.07);
+      pointer-events: none;
+    }
+    .term-bar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      background: linear-gradient(var(--chrome-a), var(--chrome-b));
+      border-bottom: 1px solid var(--chrome-line);
+    }
+    .term-dots { display: flex; gap: 8px; position: relative; z-index: 1; }
+    .term-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.18);
+    }
+    .term-dot.red { background: #ff5f57; }
+    .term-dot.yellow { background: #febc2e; }
+    .term-dot.green { background: #28c840; }
+    .term-title {
+      position: absolute;
+      left: 0;
+      right: 0;
+      text-align: center;
+      margin: 0;
+      font-size: clamp(11px, 0.8vw, 13px);
+      color: var(--chrome-title);
+      letter-spacing: 0.02em;
+      pointer-events: none;
+    }
+    .term-body {
+      padding: clamp(16px, 2.2vh, 24px) clamp(15px, 2vw, 24px) clamp(14px, 2vh, 20px);
+      font-size: clamp(13px, 0.98vw, 15px);
+    }
+    .term-cmd {
+      margin: 0 0 16px;
+      color: var(--fg-soft);
+    }
+    .tp-user { color: var(--prize); }
+    .tp-path { color: var(--fg-soft); }
+    .tp-pct { color: var(--fg-faint); }
+    .term-line {
+      padding: 7px 10px;
+      margin: 0 -10px 6px;
+      border-radius: 5px;
+      transition: background 0.2s ease;
+    }
+    .term-line:hover { background: var(--row-hover); }
+    .term-main {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: clamp(14px, 1.05vw, 17px);
+    }
+    .h-tag {
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      font-size: clamp(12px, 0.85vw, 13.5px);
+    }
+    .h-tag.win { color: var(--prize); }
+    .h-tag.finalist { color: var(--gold); }
+    .h-tag.selected { color: var(--accent); }
+    .h-name { color: var(--fg); }
+    .h-leader {
+      flex: 1;
+      min-width: 40px;
+      border-bottom: 1px dotted var(--fg-faint);
+      opacity: 0.45;
+      transform: translateY(-4px);
+    }
+    .h-result {
+      color: var(--fg-soft);
+      font-size: clamp(13px, 0.95vw, 15px);
+    }
+    .term-detail {
+      margin: 3px 0 0;
+      color: var(--fg-faint);
+      font-size: clamp(12.5px, 0.9vw, 14px);
+      line-height: 1.5;
+      max-width: 72ch;
+    }
+    .term-comment {
+      margin: 18px 0 0;
+      color: var(--fg-faint);
+    }
+    .term-prompt { margin: 14px 0 0; color: var(--fg-soft); }
+    .term-caret {
+      display: inline-block;
+      width: 0.5em;
+      height: 1.05em;
+      background: var(--fg-soft);
+      vertical-align: -0.18em;
+      margin-left: 2px;
+      animation: caret-blink 1s steps(1) infinite;
+    }
+    .term-body > .term-line:nth-of-type(1) { transition-delay: 0.10s; }
+    .term-body > .term-line:nth-of-type(2) { transition-delay: 0.22s; }
+    .term-body > .term-line:nth-of-type(3) { transition-delay: 0.34s; }
+    .term-body > .term-line:nth-of-type(4) { transition-delay: 0.46s; }
+    .term-body > .term-line:nth-of-type(5) { transition-delay: 0.58s; }
+
     /* contact + currently */
     .contact ul, .currently ul {
       list-style: none;
@@ -386,6 +685,37 @@
       color: var(--fg-faint);
       flex-shrink: 0;
     }
+
+    /* contact icons */
+    .social-meta { align-items: center; }
+    .social-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: clamp(12px, 1.5vw, 18px);
+      margin: 0;
+    }
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      color: var(--fg);
+      border: 0;
+      transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1.4);
+    }
+    .social-link svg { width: 20px; height: 20px; display: block; overflow: visible; }
+    .social-link:hover {
+      transform: translateY(-5px) scale(1.14);
+      opacity: 1;
+    }
+    /* hover: fill each mark with its real brand color */
+    .sl-linkedin:hover { color: #0a66c2; }
+    .sl-instagram:hover .ig-fill { fill: url(#ig-grad); }
+    .sl-letterboxd:hover .lb1 { fill: #ff8000; }
+    .sl-letterboxd:hover .lb2 { fill: #00e054; }
+    .sl-letterboxd:hover .lb3 { fill: #40bcf4; }
 
     /* daily brainteaser */
     .teaser-card {
@@ -473,6 +803,10 @@
     .projects .project.reveal:nth-of-type(2) { transition-delay: 0.13s; }
     .projects .project.reveal:nth-of-type(3) { transition-delay: 0.21s; }
     .projects .project.reveal:nth-of-type(4) { transition-delay: 0.29s; }
+    .projects .project.reveal:nth-of-type(5) { transition-delay: 0.37s; }
+    .experience .role.reveal:nth-of-type(1) { transition-delay: 0.05s; }
+    .experience .role.reveal:nth-of-type(2) { transition-delay: 0.13s; }
+    .experience .role.reveal:nth-of-type(3) { transition-delay: 0.21s; }
 
     /* mobile */
     @media (max-width: 600px) {
@@ -481,9 +815,22 @@
         gap: 4px;
       }
       .contact .label, .currently .label { width: auto; }
-      .languages { flex-direction: column; gap: 4px; }
-      .languages .label { width: auto; }
-      .project-head { gap: 8px; }
+      .meta-row { flex-direction: column; gap: 4px; }
+      .meta-row .label { width: auto; }
+      .social-meta { align-items: flex-start; }
+      .social-meta .social-row { margin-top: 4px; }
+      .project-head, .role-head { gap: 8px; }
+      .h-leader { display: none; }
+      .term-dims { display: none; }
+    }
+    @media (max-width: 560px) {
+      .clock-pill { display: none; }
+    }
+
+    /* narrow phones: reserve two lines for the intro so it doesn't jump in
+       height as it cycles between the wrapping English and one-line Chinese */
+    @media (max-width: 420px) {
+      .name { min-height: 2.3em; }
     }
 
     /* wide displays */
@@ -496,6 +843,9 @@
       html { scroll-behavior: auto; }
       .clock-pill .colon,
       .name .caret,
+      .term-caret,
+      .skier-sprite,
+      .skier .spray,
       .bill { animation: none; }
       .bill { display: none; }
       .reveal { opacity: 1; transform: none; transition: none; }
@@ -504,8 +854,76 @@
 </head>
 <body>
 
+  <div id="skitrack" aria-hidden="true">
+    <div class="snowline"></div>
+    <div class="skier">
+      <div class="skier-sprite">
+        <svg viewBox="0 0 26 20" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
+          <!-- snow spray (behind) -->
+          <g class="spray" fill="#9fc0da">
+            <rect x="2" y="13" width="1" height="1"/>
+            <rect x="0" y="15" width="1" height="1"/>
+            <rect x="3" y="16" width="1" height="1"/>
+            <rect x="1" y="17" width="1" height="1"/>
+            <rect x="0" y="18" width="1" height="1"/>
+          </g>
+          <!-- skis -->
+          <g fill="#57a0d6">
+            <rect x="3" y="15" width="20" height="1"/>
+            <rect x="22" y="14" width="2" height="1"/>
+            <rect x="5" y="17" width="20" height="1"/>
+            <rect x="24" y="16" width="2" height="1"/>
+          </g>
+          <!-- pole -->
+          <g fill="#3a342b">
+            <rect x="9" y="9" width="1" height="1"/>
+            <rect x="8" y="10" width="1" height="1"/>
+            <rect x="7" y="11" width="1" height="1"/>
+            <rect x="6" y="12" width="1" height="1"/>
+            <rect x="5" y="13" width="1" height="1"/>
+            <rect x="4" y="13" width="2" height="1"/>
+          </g>
+          <!-- legs + boots -->
+          <g fill="#3a342b">
+            <rect x="11" y="11" width="1" height="3"/>
+            <rect x="13" y="11" width="1" height="1"/>
+            <rect x="13" y="12" width="2" height="1"/>
+            <rect x="14" y="13" width="1" height="1"/>
+            <rect x="10" y="14" width="2" height="1"/>
+            <rect x="15" y="14" width="2" height="1"/>
+          </g>
+          <!-- jacket + arms + hat band -->
+          <g fill="#e0564d">
+            <rect x="15" y="3" width="5" height="1"/>
+            <rect x="14" y="6" width="3" height="1"/>
+            <rect x="13" y="7" width="4" height="1"/>
+            <rect x="12" y="8" width="4" height="1"/>
+            <rect x="12" y="9" width="2" height="1"/>
+            <rect x="11" y="10" width="3" height="1"/>
+            <rect x="17" y="7" width="1" height="1"/>
+            <rect x="18" y="8" width="1" height="1"/>
+            <rect x="11" y="7" width="1" height="1"/>
+            <rect x="10" y="8" width="1" height="1"/>
+          </g>
+          <!-- hat top -->
+          <rect x="16" y="2" width="3" height="1" fill="#b7433b"/>
+          <!-- face + gloves -->
+          <g fill="#f0c9a4">
+            <rect x="16" y="4" width="4" height="2"/>
+            <rect x="17" y="6" width="2" height="1"/>
+            <rect x="18" y="9" width="1" height="1"/>
+            <rect x="10" y="9" width="1" height="1"/>
+          </g>
+          <!-- goggles -->
+          <rect x="18" y="4" width="2" height="1" fill="#3a342b"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
   <main>
     <section class="hero" id="top">
+      <div class="hero-chrome">
       <a class="hero-logo" href="#top" aria-label="home">
         <svg viewBox="0 0 64 64" aria-hidden="true">
           <rect x="3" y="3" width="58" height="58" fill="none" stroke="currentColor" stroke-width="4"/>
@@ -519,39 +937,92 @@
           <span class="clock-time">
             <span id="ck-h">--</span><span class="colon">:</span><span id="ck-m">--</span><span class="colon">:</span><span id="ck-s">--</span>
           </span>
-          <span class="clock-tz">EDT</span>
+          <span class="clock-tz" id="ck-tz">EDT</span>
+        </div>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="toggle color theme">☼ light</button>
         </div>
       </div>
       <div class="hero-inner">
-        <span class="greeting" id="greeting">good morning.</span>
-        <h1 class="name" aria-label="micah gao"><span id="name-text"></span><span class="caret" aria-hidden="true"></span></h1>
+        <h1 class="name" aria-label="Hello World! I'm Micah."><span id="name-text"></span><span class="caret" aria-hidden="true"></span></h1>
         <p class="headline">Self-taught developer. Business student. Skier, in that order depending on the snow.</p>
+        <nav class="hero-index" aria-label="sections">
+          <a href="#about">about</a>
+          <a href="#experience">experience</a>
+          <a href="#projects">projects</a>
+          <a href="#honors">honors</a>
+        </nav>
       </div>
     </section>
 
     <section class="about reveal" id="about">
       <div class="wrap">
         <h2>about</h2>
-        <p>I'm a Chinese-American from Fishers, IN, studying accounting and information systems at IU Kelley (Class of 2028). 
-          I got into coding freshman-year winter break trying to clone YouTube in HTML and CSS. 
-          I'm most curious about AI agents, fintech, and applied ML.
-Outside of building stuff: lifting, Clash Royale, and a lot of music. My favorite food is 牛肉麵 (beef noodle soup) and my favorite place I've ever traveled is Chongqing.</p>
-        <p class="languages">
+        <p>I'm a Chinese-American from Fishers, IN, majoring in informatics with an accounting and business minor.
+          I got into coding freshman-year winter break trying to clone YouTube in HTML and CSS.
+          I'm most curious about fintech, VLMs, and applied ML.
+          Outside of building stuff: lifting, skiing, pickleball, and a lot of movies.</p>
+        <p class="meta-row">
           <span class="label">languages</span>
-          <span>Python · TypeScript · Swift · JavaScript</span>
+          <span>Python · TypeScript · Swift · JavaScript · SQL</span>
         </p>
+        <div class="meta-row social-meta" id="contact">
+          <div class="social-row">
+            <a class="social-link sl-email" href="mailto:mfgao@iu.edu" aria-label="Email mfgao@iu.edu" title="mfgao@iu.edu">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </a>
+            <a class="social-link sl-linkedin" href="https://www.linkedin.com/in/micahgao/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
+            </a>
+            <a class="social-link sl-github" href="https://github.com/micah872" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            </a>
+            <a class="social-link sl-instagram" href="https://www.instagram.com/micah_gao/" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><defs><radialGradient id="ig-grad" cx="30%" cy="107%" r="135%"><stop offset="0" stop-color="#fdf497"/><stop offset=".08" stop-color="#fdf497"/><stop offset=".45" stop-color="#fd5949"/><stop offset=".6" stop-color="#d6249f"/><stop offset=".9" stop-color="#285aeb"/></radialGradient></defs><path class="ig-fill" fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+            <a class="social-link sl-letterboxd" href="https://letterboxd.com/M1cahhhhh/" target="_blank" rel="noopener" aria-label="Letterboxd" title="Letterboxd">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="currentColor"><circle class="lb1" cx="5.6" cy="12" r="3.3"/><circle class="lb2" cx="12" cy="12" r="3.3"/><circle class="lb3" cx="18.4" cy="12" r="3.3"/></svg>
+            </a>
+            <a class="social-link sl-x" href="https://x.com/MicahGao" target="_blank" rel="noopener" aria-label="X" title="X">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a class="social-link sl-resume" href="Micah_Gao_Resume.pdf" target="_blank" rel="noopener" aria-label="Resume (PDF)" title="Resume (PDF)">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M8 3h5.5L18 7.5V19a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm1 8.5h6V13H9v-1.5Zm0 3h6V16H9v-1.5Zm0 3h3.5V19H9v-1.5Z"/></svg>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="currently reveal" id="currently">
+    <section class="experience" id="experience">
       <div class="wrap">
-        <h2>currently</h2>
-        <ul>
-          <li><span class="label">k-drama</span><span>Bloodhounds</span></li>
-          <li><span class="label">on snow</span><span>Copper Mountain</span></li>
-          <li><span class="label">hacking</span><span>UC Berkeley AI Hackathon</span></li>
-          <li><span class="label">reading</span><span>Naked Economics by Charles Wheelan</span></li>
-        </ul>
+        <h2 class="reveal">experience</h2>
+
+        <article class="role reveal">
+          <div class="role-head">
+            <h3 class="role-title">accounting &amp; technology intern</h3>
+            <span class="role-dates">may 2026 – present</span>
+          </div>
+          <p class="role-org">h.t. hackney · $4B+ wholesale distributor · indianapolis, IN</p>
+          <p class="role-desc">a fair mix of crunching numbers on Excel and building internal tools</p>
+        </article>
+
+        <article class="role reveal">
+          <div class="role-head">
+            <h3 class="role-title">m&amp;a machine learning intern</h3>
+            <span class="role-dates">may 2026 – present</span>
+          </div>
+          <p class="role-org">university of indianapolis · indianapolis, IN</p>
+          <p class="role-desc">conducting research on machine learning applications in mergers and acquisitions 🤓</p>
+        </article>
+
+        <article class="role reveal">
+          <div class="role-head">
+            <h3 class="role-title">director of technology</h3>
+            <span class="role-dates">june 2026 – present</span>
+          </div>
+          <p class="role-org">aperture partners · 501(c)(3) B2B consulting · bloomington, IN</p>
+          <p class="role-desc">Student consulting org, Kelley's Organization of the Year, serving clients like Toyota, Cummins, Bond AI, and the Indianapolis Indians</p>
+        </article>
       </div>
     </section>
 
@@ -559,13 +1030,30 @@ Outside of building stuff: lifting, Clash Royale, and a lot of music. My favorit
       <div class="wrap">
         <h2 class="reveal">projects</h2>
 
-        <article class="project reveal">
+        <article class="project reveal flagship">
+          <div class="money-rain trophies" aria-hidden="true">
+            <span class="bill bill-1"></span>
+            <span class="bill bill-2"></span>
+            <span class="bill bill-3"></span>
+            <span class="bill bill-4"></span>
+            <span class="bill bill-5"></span>
+            <span class="bill bill-6"></span>
+            <span class="bill bill-7"></span>
+            <span class="bill bill-8"></span>
+            <span class="bill bill-9"></span>
+            <span class="bill bill-10"></span>
+            <span class="bill bill-11"></span>
+            <span class="bill bill-12"></span>
+            <span class="bill bill-13"></span>
+            <span class="bill bill-14"></span>
+          </div>
+          <span class="project-kicker">finalist · top 10 of 460+ teams · uc berkeley ai hackathon</span>
           <div class="project-head">
-            <a class="project-title linked" href="https://skipilot.cc" target="_blank" rel="noopener">skipilot</a>
+            <a class="project-title linked" href="https://devpost.com/software/studforge" target="_blank" rel="noopener">studforge</a>
             <span class="year">2026</span>
           </div>
-          <p>Brand-agnostic ski recommendations. Ranks skis across 12 fit dimensions, pulls live pricing from 7 retailers, and reads gear specs off your ski and boot photos. Live at skipilot.cc.</p>
-          <p class="stack">next.js · supabase · sonnet 4.6</p>
+          <p>Swarm robotics world compiler</p>
+          <p class="stack">python · react three fiber · qwen2.5 · redis</p>
         </article>
 
         <article class="project reveal featured">
@@ -587,19 +1075,28 @@ Outside of building stuff: lifting, Clash Royale, and a lot of music. My favorit
           </div>
           <span class="project-kicker">winner · <span class="prize-amount">$1,000</span> · regeneron grand prize · hackprinceton</span>
           <div class="project-head">
-            <span class="project-title">onkos</span>
+            <a class="project-title linked" href="https://devpost.com/software/onkos-dt4rg2" target="_blank" rel="noopener">onkos</a>
             <span class="year">2026</span>
           </div>
-          <p>Drop in a patient's records and get back matching clinical trials with grounded reasoning. Self-hosted a 30B medical vision-language model on an H200 and orchestrated it through LangGraph. Won the Regeneron grand prize at HackPrinceton out of 600+ hackers.</p>
-          <p class="stack">next.js · fastapi · k2-think · kimi-k2</p>
+          <p>Drop in a patient's records and get back matching oncology trials, scored against 20+ eligibility criteria with cited reasoning for every disqualification</p>
+          <p class="stack">next.js · fastapi · langgraph · vllm</p>
         </article>
 
         <article class="project reveal">
           <div class="project-head">
-            <span class="project-title">redhue</span>
+            <a class="project-title linked" href="https://skipilot.org" target="_blank" rel="noopener">skipilot</a>
             <span class="year">2026</span>
           </div>
-          <p>Real-time wildfire dashboard for incident commanders, fusing 8 live data feeds into one map with burn-perimeter projections from a TypeScript port of Rothermel's spread model. Built at Stanford TreeHacks, recognized by Anthropic.</p>
+          <p>Brand-agnostic ski recommendations</p>
+          <p class="stack">next.js · supabase · sonnet 4.6</p>
+        </article>
+
+        <article class="project reveal">
+          <div class="project-head">
+            <a class="project-title linked" href="https://devpost.com/software/redhue" target="_blank" rel="noopener">redhue</a>
+            <span class="year">2026</span>
+          </div>
+          <p>Real-time wildfire dashboard for incident commanders</p>
           <p class="stack">next.js · sonnet 4.6 · deepgram · supabase</p>
         </article>
 
@@ -608,9 +1105,91 @@ Outside of building stuff: lifting, Clash Royale, and a lot of music. My favorit
             <span class="project-title">doji</span>
             <span class="year">2025</span>
           </div>
-          <p>AI financial advisor wired into your brokerage accounts through Plaid. Pulls live positions and gives personalized takes, not generic market chatter.</p>
+          <p>AI financial advisor wired into your brokerage accounts through Plaid</p>
           <p class="stack">react native · express · postgres · plaid</p>
         </article>
+      </div>
+    </section>
+
+    <section class="honors" id="honors">
+      <div class="wrap">
+        <h2 class="reveal">honors &amp; external programs</h2>
+        <div class="term reveal">
+          <div class="term-bar" aria-hidden="true">
+            <span class="term-dots">
+              <span class="term-dot red"></span><span class="term-dot yellow"></span><span class="term-dot green"></span>
+            </span>
+            <span class="term-title">honors.log — zsh<span class="term-dims"> — 96×24</span></span>
+          </div>
+          <div class="term-body">
+            <p class="term-cmd"><span class="tp-user">micah@macbook</span> <span class="tp-path">~/honors</span> <span class="tp-pct">%</span> cat honors.log</p>
+
+            <div class="term-line reveal">
+              <div class="term-main">
+                <span class="h-tag finalist">[FINALIST]</span>
+                <span class="h-name">uc berkeley ai hackathon</span>
+                <span class="h-leader" aria-hidden="true"></span>
+                <span class="h-result">top 10 / 460+ teams</span>
+              </div>
+              <p class="term-detail">jun 2026 · berkeley, CA · pitched StudForge on the main stage to VC judges at the world's largest AI hackathon, 1,600+ hackers</p>
+            </div>
+
+            <div class="term-line reveal">
+              <div class="term-main">
+                <span class="h-tag win">[WINNER]</span>
+                <span class="h-name">hackprinceton</span>
+                <span class="h-leader" aria-hidden="true"></span>
+                <span class="h-result">$1,000 regeneron grand prize</span>
+              </div>
+              <p class="term-detail">apr 2026 · princeton, NJ · best use of AI in clinical trials, out of 600+ hackers</p>
+            </div>
+
+            <div class="term-line reveal">
+              <div class="term-main">
+                <span class="h-tag selected">[SELECTED]</span>
+                <span class="h-name">stanford treehacks</span>
+                <span class="h-leader" aria-hidden="true"></span>
+                <span class="h-result">3% acceptance / 15,000+ applicants</span>
+              </div>
+              <p class="term-detail">feb 2026 · palo alto, CA · demoed Redhue to Anthropic and a CAL FIRE chief, 1 of 20 projects picked from 400+</p>
+            </div>
+
+            <div class="term-line reveal">
+              <div class="term-main">
+                <span class="h-tag selected">[SELECTED]</span>
+                <span class="h-name">deloitte compass conference</span>
+                <span class="h-leader" aria-hidden="true"></span>
+                <span class="h-result">national selection</span>
+              </div>
+              <p class="term-detail">aug 2026 · westlake, TX · fully funded early-career conference at Deloitte University</p>
+            </div>
+
+            <div class="term-line reveal">
+              <div class="term-main">
+                <span class="h-tag selected">[SELECTED]</span>
+                <span class="h-name">peak6 young professionals day</span>
+                <span class="h-leader" aria-hidden="true"></span>
+                <span class="h-result">chicago board of trade</span>
+              </div>
+              <p class="term-detail">summer 2026 · chicago, IL · live markets exposure, mock interviews, and trading exercises with the PEAK6 team</p>
+            </div>
+
+            <p class="term-comment"># also: expedition EY technology track · goldman sachs possibilities series</p>
+            <p class="term-prompt"><span class="tp-user">micah@macbook</span> <span class="tp-path">~/honors</span> <span class="tp-pct">%</span> <span class="term-caret" aria-hidden="true"></span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="currently reveal" id="currently">
+      <div class="wrap">
+        <h2>currently</h2>
+        <!-- update these when they rot -->
+        <ul>
+          <li><span class="label">watching</span><span>Suits</span></li>
+          <li><span class="label">building</span><span>internal wholesale catalog @ H.T. Hackney</span></li>
+          <li><span class="label">reading</span><span>Naked Economics by Charles Wheelan</span></li>
+        </ul>
       </div>
     </section>
 
@@ -625,18 +1204,6 @@ Outside of building stuff: lifting, Clash Royale, and a lot of music. My favorit
         </div>
       </div>
     </section>
-
-    <section class="contact reveal" id="contact">
-      <div class="wrap">
-        <h2>come say hi @</h2>
-        <ul>
-          <li><span class="label">email</span><a href="mailto:mfgao@iu.edu">mfgao@iu.edu</a></li>
-          <li><span class="label">github</span><a href="https://github.com/micah872" target="_blank" rel="noopener">github.com/micah872</a></li>
-          <li><span class="label">linkedin</span><a href="https://www.linkedin.com/in/micahgao/" target="_blank" rel="noopener">linkedin.com/in/micahgao</a></li>
-          <li><span class="label">resume</span><a href="/Gao_Micah_Hybrid_Soph.pdf" target="_blank" rel="noopener">view PDF</a></li>
-        </ul>
-      </div>
-    </section>
   </main>
 
   <footer class="reveal">
@@ -649,22 +1216,45 @@ Outside of building stuff: lifting, Clash Royale, and a lot of music. My favorit
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    function currentGreeting() {
-      const h = new Date().getHours();
-      if (h >= 5  && h < 12) return 'good morning!';
-      if (h >= 12 && h < 17) return 'good afternoon!';
-      if (h >= 17 && h < 22) return 'good evening!';
-      if (h >= 22 || h < 2)  return 'up late?';
-      return 'GO TO BED!!! 💤';
-    }
+    /* theme toggle */
+    (function themeToggle() {
+      const btn = document.getElementById('theme-toggle');
+      const root = document.documentElement;
+      function paint() {
+        btn.textContent = root.dataset.theme === 'dark' ? '☼ light' : '☾ dark';
+      }
+      btn.addEventListener('click', () => {
+        root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('theme', root.dataset.theme);
+        paint();
+      });
+      paint();
+    })();
 
-    const greeting = document.getElementById('greeting');
-    greeting.textContent = currentGreeting();
-    setInterval(() => { greeting.textContent = currentGreeting(); }, 60 * 1000);
+    /* scroll skier — glides left→right with scroll progress */
+    (function skier() {
+      const track = document.getElementById('skitrack');
+      const skier = track && track.querySelector('.skier');
+      if (!skier) return;
+      let ticking = false;
+      function update() {
+        const h = document.documentElement;
+        const max = h.scrollHeight - h.clientHeight;
+        const p = max > 0 ? h.scrollTop / max : 0;
+        const maxX = Math.max(0, track.clientWidth - skier.offsetWidth);
+        skier.style.transform = 'translateX(' + (p * maxX) + 'px)';
+        ticking = false;
+      }
+      addEventListener('scroll', () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }, { passive: true });
+      addEventListener('resize', update, { passive: true });
+      update();
+    })();
 
-    (function typeName() {
+    (function typeIntro() {
       const el = document.getElementById('name-text');
-      const phrases = ['micah gao', '高博文'];
+      const phrases = ["Hello World! I'm Micah.", '你好，世界！我是高博文。'];
       const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduced) { el.textContent = phrases[0]; return; }
 
@@ -676,18 +1266,18 @@ Outside of building stuff: lifting, Clash Royale, and a lot of music. My favorit
           el.textContent = word.slice(0, char);
           if (char === word.length) {
             deleting = true;
-            return setTimeout(tick, 2600);
+            return setTimeout(tick, 2400);
           }
-          setTimeout(tick, 180);
+          setTimeout(tick, 105);
         } else {
           char--;
           el.textContent = word.slice(0, char);
           if (char === 0) {
             deleting = false;
             idx = (idx + 1) % phrases.length;
-            return setTimeout(tick, 700);
+            return setTimeout(tick, 650);
           }
-          setTimeout(tick, 95);
+          setTimeout(tick, 45);
         }
       }
       tick();
@@ -708,11 +1298,13 @@ Outside of building stuff: lifting, Clash Royale, and a lot of music. My favorit
     (function clock() {
       const fmt = new Intl.DateTimeFormat('en-US', {
         timeZone: 'America/Indiana/Indianapolis',
-        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
+        timeZoneName: 'short'
       });
       const hEl = document.getElementById('ck-h');
       const mEl = document.getElementById('ck-m');
       const sEl = document.getElementById('ck-s');
+      const tzEl = document.getElementById('ck-tz');
       function get(parts, t) {
         const p = parts.find((x) => x.type === t);
         return p ? p.value : '--';
@@ -724,6 +1316,7 @@ Outside of building stuff: lifting, Clash Royale, and a lot of music. My favorit
         hEl.textContent = hr;
         mEl.textContent = get(parts, 'minute');
         sEl.textContent = get(parts, 'second');
+        tzEl.textContent = get(parts, 'timeZoneName');
       }
       tick();
       setInterval(tick, 1000);
@@ -761,9 +1354,7 @@ Outside of building stuff: lifting, Clash Royale, and a lot of music. My favorit
         { q: "You have 100 coins: 10 heads up, 90 tails up. Blindfolded, split them into two piles with equal numbers of heads.", a: "Take any 10 coins for a new pile and flip all 10. Both piles now have the same number of heads." },
         { q: "Eight balls look identical but one is heavier. With a balance scale and 2 weighings, find the heavy ball.", a: "Weigh 3 vs. 3. If balanced, weigh the remaining 2. If unbalanced, take the heavier group of 3 and weigh any 2; the lone one (or the heavier of the two) is your ball." },
         { q: "Two coins add up to 30 cents and one of them is not a nickel. What are they?", a: "A quarter and a nickel. The quarter is the one that is not a nickel; the OTHER one is." },
-        { q: "What goes up but never comes down?", a: "Your age." }
-      ];
-      teasers.push(
+        { q: "What goes up but never comes down?", a: "Your age." },
         { q: "If two's company and three's a crowd, what are four and five?", a: "Nine." },
         { q: "A grandfather, two fathers, and two sons go to a movie and buy three tickets total. How?", a: "Three people: grandfather, his son (also a father), and his grandson." },
         { q: "I'm tall when I'm young and short when I'm old. What am I?", a: "A candle." },
@@ -804,7 +1395,7 @@ Outside of building stuff: lifting, Clash Royale, and a lot of music. My favorit
         { q: "A prisoner is offered a bag with two beans. White = freedom, black = death. He knows the warden rigged it with two black beans. How does he escape death?", a: "He draws one bean and swallows it without looking. The remaining bean is black, which 'proves' he must have drawn the white one." },
         { q: "I have keys but no locks, space but no rooms. You can enter but not go outside. What am I?", a: "A keyboard." },
         { q: "A man is born in 1955 and dies in 1955 at age 60. How?", a: "1955 is a room number, not a year." }
-      );
+      ];
 
       function hashStr(s) {
         let h = 2166136261 >>> 0;
