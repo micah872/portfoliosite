@@ -720,55 +720,6 @@
       .sl-letterboxd:hover .lb3 { fill: #40bcf4; }
     }
 
-    /* daily brainteaser */
-    .teaser-card {
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      padding: clamp(20px, 2.5vh, 28px);
-      background: var(--card-bg);
-      max-width: 720px;
-      transition: border-color 0.3s ease, background 0.3s ease;
-    }
-    .teaser-meta {
-      display: block;
-      font-size: clamp(11px, 0.8vw, 13px);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--fg-faint);
-      margin-bottom: 10px;
-      font-variant-numeric: tabular-nums;
-    }
-    .teaser-q {
-      margin: 0 0 16px;
-      font-size: clamp(16px, 1.2vw, 19px);
-      line-height: 1.5;
-      color: var(--fg);
-    }
-    .teaser-reveal {
-      background: transparent;
-      border: 1px solid var(--line);
-      padding: 8px 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      font: inherit;
-      color: var(--fg-soft);
-      letter-spacing: 0.12em;
-      font-size: clamp(11px, 0.8vw, 13px);
-      text-transform: uppercase;
-      transition: color 0.2s, border-color 0.2s, background 0.2s;
-    }
-    .teaser-reveal:hover { color: var(--fg); border-color: var(--fg-soft); }
-    .teaser-a {
-      margin: 16px 0 0;
-      padding: 14px 16px;
-      background: transparent;
-      border-left: 2px solid var(--line);
-      color: var(--fg);
-      font-size: clamp(15px, 1.05vw, 17px);
-      line-height: 1.55;
-      border-radius: 0;
-    }
-
     /* footer */
     footer {
       padding-top: clamp(20px, 3vh, 32px);
@@ -960,13 +911,13 @@
     <section class="about reveal" id="about">
       <div class="wrap">
         <h2>about</h2>
-        <p>I'm a Chinese-American from Fishers, IN, studying informatics with an accounting and business minor.
+        <p>I'm a Chinese-American from Fishers, IN.
           I got into coding freshman-year winter break trying to clone YouTube in HTML and CSS.
           I'm most curious about fintech, VLMs, and applied ML.
           Outside of building stuff: lifting, skiing, pickleball, and a lot of movies.</p>
         <p class="meta-row">
           <span class="label">education</span>
-          <span>Indiana University Bloomington · B.S. Informatics + Accounting & Business Minor</span>
+          <span>Indiana University Bloomington · B.S. Informatics + Accounting &amp; Business Minor</span>
         </p>
         <p class="meta-row">
           <span class="label">languages</span>
@@ -1136,9 +1087,9 @@
                 <span class="h-tag finalist">[FINALIST]</span>
                 <span class="h-name">uc berkeley ai hackathon</span>
                 <span class="h-leader" aria-hidden="true"></span>
-                <span class="h-result">top 10 / 460+ teams</span>
+                <span class="h-result">2nd, engineering track</span>
               </div>
-              <p class="term-detail">jun 2026 · berkeley, CA · pitched StudForge on the main stage to VC judges at the world's largest AI hackathon, 1,600+ hackers</p>
+              <p class="term-detail">jun 2026 · berkeley, CA · top 10 of 460+ teams · pitched StudForge on the main stage to VC judges at the world's largest AI hackathon, 1,600+ hackers</p>
             </div>
 
             <div class="term-line reveal">
@@ -1153,12 +1104,12 @@
 
             <div class="term-line reveal">
               <div class="term-main">
-                <span class="h-tag selected">[SELECTED]</span>
+                <span class="h-tag finalist">[RUNNER-UP]</span>
                 <span class="h-name">stanford treehacks</span>
                 <span class="h-leader" aria-hidden="true"></span>
-                <span class="h-result">3% acceptance / 15,000+ applicants</span>
+                <span class="h-result">anthropic track runner-up</span>
               </div>
-              <p class="term-detail">feb 2026 · palo alto, CA · demoed Redhue to Anthropic and a CAL FIRE chief, 1 of 20 projects picked from 400+</p>
+              <p class="term-detail">feb 2026 · palo alto, CA · 3% acceptance from 15,000+ applicants · demoed Redhue to Anthropic and a CAL FIRE chief, 1 of 20 projects picked from 400+</p>
             </div>
 
             <div class="term-line reveal">
@@ -1197,18 +1148,6 @@
           <li><span class="label">building</span><span>internal wholesale catalog @ H.T. Hackney</span></li>
           <li><span class="label">reading</span><span>Naked Economics by Charles Wheelan</span></li>
         </ul>
-      </div>
-    </section>
-
-    <section class="brainteaser reveal" id="brainteaser">
-      <div class="wrap">
-        <h2>daily brainteaser</h2>
-        <div class="teaser-card">
-          <span class="teaser-meta" id="teaser-date">loading</span>
-          <p class="teaser-q" id="teaser-q">loading...</p>
-          <button class="teaser-reveal" id="teaser-reveal" type="button">reveal answer</button>
-          <p class="teaser-a" id="teaser-a" hidden></p>
-        </div>
       </div>
     </section>
   </main>
@@ -1332,115 +1271,6 @@
       }
       tick();
       setInterval(tick, 1000);
-    })();
-
-    /* daily brainteaser — deterministic per Indianapolis date */
-    (function brainteaser() {
-      const teasers = [
-        { q: "A bat and a ball cost $1.10 in total. The bat costs $1.00 more than the ball. How much does the ball cost?", a: "5 cents. If the ball were $0.10 the bat would be $1.10, totaling $1.20. At $0.05 the bat is $1.05, totaling $1.10." },
-        { q: "If it takes 5 machines 5 minutes to make 5 widgets, how long would it take 100 machines to make 100 widgets?", a: "5 minutes. Each machine still makes one widget in 5 minutes regardless of fleet size." },
-        { q: "A patch of lily pads doubles every day. If it covers the whole lake on day 48, on what day was it half-covered?", a: "Day 47. It doubles each day, so it was half-sized the day before it filled the lake." },
-        { q: "A man lives on the 10th floor. Each morning he rides the elevator down. Coming home he rides to the 7th floor and walks, except on rainy days when he rides all the way to the 10th. Why?", a: "He is too short to reach the 10th-floor button. On rainy days he uses his umbrella to press it." },
-        { q: "Two ropes each burn for exactly 60 minutes but unevenly. How do you measure exactly 45 minutes?", a: "Light rope A on both ends and rope B on one end at the same time. When A finishes (30 min), light B's other end. B finishes 15 minutes later for 45 total." },
-        { q: "Three switches outside a closed room each control one bulb inside. You can enter the room only once. How do you tell which switch is which?", a: "Turn switch 1 on for several minutes, then off. Turn switch 2 on. Enter: lit = 2, warm but off = 1, cold and off = 3." },
-        { q: "Three friends pay $30 for a hotel room. The clerk realizes it should be $25 and sends $5 back with a bellboy who keeps $2 and gives each friend $1. So each paid $9 ($27), plus the bellboy's $2 is $29. Where is the missing dollar?", a: "Nowhere. The $27 paid equals the $25 room plus the $2 the bellboy kept. Adding the bellboy's $2 to the $27 is double counting." },
-        { q: "A snail climbs a 10-foot pole. It climbs 3 feet by day and slides 2 feet down at night. How many days to reach the top?", a: "8 days. After 7 days it has 7 feet (net 1 per day). On day 8 it climbs 3 more feet to the top before sliding." },
-        { q: "A clock loses 5 minutes per hour. If set correctly at noon, what time will it show at the actual time 6:00 PM?", a: "5:30 PM. In 6 real hours it only advances 6 x 55 = 330 minutes." },
-        { q: "Two trains are 60 miles apart, traveling toward each other at 30 mph each. A bird flies at 60 mph between them until they meet. How far does the bird fly?", a: "60 miles. The trains meet in 1 hour, and the bird flies at 60 mph for that full hour." },
-        { q: "A man pushes his car up to a hotel and immediately tells the owner he is bankrupt. Why?", a: "He is playing Monopoly." },
-        { q: "A truck driver goes the wrong way down a one-way street and passes a cop who doesn't stop him. Why not?", a: "He is walking, not driving." },
-        { q: "Two fathers and two sons go fishing. Each catches one fish, and they come home with three. How?", a: "There are only three people: grandfather, father, and son. The middle one is both a son and a father." },
-        { q: "A man builds a house with all four walls facing south. A bear walks by. What color is the bear?", a: "White. The house is at the North Pole, so the bear is a polar bear." },
-        { q: "A drawer holds 10 black and 10 white socks. In the dark, how many must you pull out to guarantee a matching pair?", a: "3. With only two colors, the third sock must match one of the first two." },
-        { q: "Two doors: one leads to freedom, one to death. Two guards: one always lies, one always tells the truth, and you don't know which is which. You may ask one guard one question. What do you ask?", a: "Ask either guard: 'Which door would the other guard say leads to freedom?' Then take the opposite door." },
-        { q: "With a 3-gallon jug and a 5-gallon jug, measure exactly 4 gallons.", a: "Fill the 5 and pour into the 3 (leaving 2 in the 5). Empty the 3, pour the 2 in. Refill the 5, pour into the 3-jug until full (which only takes 1 more). The 5-jug now holds exactly 4." },
-        { q: "What has keys but cannot open any locks?", a: "A piano." },
-        { q: "The more you take, the more you leave behind. What are they?", a: "Footsteps." },
-        { q: "What can travel around the world while staying in the same corner?", a: "A postage stamp." },
-        { q: "What gets wetter the more it dries?", a: "A towel." },
-        { q: "I have cities but no houses, mountains but no trees, water but no fish. What am I?", a: "A map." },
-        { q: "The poor have it, the rich need it, and if you eat it, you die. What is it?", a: "Nothing." },
-        { q: "What is so fragile that saying its name breaks it?", a: "Silence." },
-        { q: "I speak without a mouth and hear without ears. I have no body but come alive with the wind. What am I?", a: "An echo." },
-        { q: "A clock strikes 6 in 5 seconds. How long does it take to strike 12?", a: "11 seconds. Six strikes have 5 intervals (1 second each). Twelve strikes have 11 intervals." },
-        { q: "You have 100 coins: 10 heads up, 90 tails up. Blindfolded, split them into two piles with equal numbers of heads.", a: "Take any 10 coins for a new pile and flip all 10. Both piles now have the same number of heads." },
-        { q: "Eight balls look identical but one is heavier. With a balance scale and 2 weighings, find the heavy ball.", a: "Weigh 3 vs. 3. If balanced, weigh the remaining 2. If unbalanced, take the heavier group of 3 and weigh any 2; the lone one (or the heavier of the two) is your ball." },
-        { q: "Two coins add up to 30 cents and one of them is not a nickel. What are they?", a: "A quarter and a nickel. The quarter is the one that is not a nickel; the OTHER one is." },
-        { q: "What goes up but never comes down?", a: "Your age." },
-        { q: "If two's company and three's a crowd, what are four and five?", a: "Nine." },
-        { q: "A grandfather, two fathers, and two sons go to a movie and buy three tickets total. How?", a: "Three people: grandfather, his son (also a father), and his grandson." },
-        { q: "I'm tall when I'm young and short when I'm old. What am I?", a: "A candle." },
-        { q: "What has hands but cannot clap?", a: "A clock." },
-        { q: "What has a head and a tail but no body?", a: "A coin." },
-        { q: "Forward I'm heavy, backward I'm not. What am I?", a: "The word 'ton'. Reversed it spells 'not'." },
-        { q: "A monk climbs a mountain at varying paces from dawn to dusk. The next day he descends, also dawn to dusk. Must there be a point he occupies at the same time of day on both days?", a: "Yes. Imagine both walks happening on the same day: the two versions of the monk must meet somewhere on the path." },
-        { q: "What five-letter word becomes shorter when you add two letters to it?", a: "Short. Add 'er' to get 'shorter'." },
-        { q: "If you have me, you want to share me. If you share me, you don't have me. What am I?", a: "A secret." },
-        { q: "What can fill a room but takes up no space?", a: "Light." },
-        { q: "A man looks at a photograph and says, 'Brothers and sisters I have none, but that man's father is my father's son.' Whose picture is it?", a: "His son's." },
-        { q: "Five apples are in a basket. How do you divide them among five people so each gets one apple and one remains in the basket?", a: "Give the fifth person the basket with the last apple still inside." },
-        { q: "How many times can you subtract 10 from 100?", a: "Once. After that you would be subtracting from 90." },
-        { q: "A father is four times as old as his son. In 20 years he will be twice as old. How old are they now?", a: "Father 40, son 10. In 20 years: 60 and 30." },
-        { q: "Which is heavier: a pound of feathers or a pound of bricks?", a: "Neither. They both weigh one pound." },
-        { q: "In a race you pass the person in 2nd place. What place are you in?", a: "2nd place. You took their position, not 1st." },
-        { q: "A boy bets a carnival man $50 that he can't write the boy's exact weight on a piece of paper. The boy sees no scale, takes the bet, and loses. Why?", a: "The man wrote the words 'your exact weight' on the paper." },
-        { q: "Everything in a one-story house is yellow: walls, doors, furniture. What color are the stairs?", a: "There are no stairs. It is a one-story house." },
-        { q: "Three doctors say Robert is their brother. Robert says he has no brothers. Who is lying?", a: "Nobody. The three doctors are Robert's sisters." },
-        { q: "A girl has as many brothers as sisters, but each brother has only half as many brothers as sisters. How many of each are there?", a: "Four sisters and three brothers." },
-        { q: "What's full of holes but still holds water?", a: "A sponge." },
-        { q: "What word, if pronounced right, is wrong, but if pronounced wrong, is right?", a: "The word 'wrong'." },
-        { q: "If a plane crashes exactly on the US-Canada border, where do you bury the survivors?", a: "You don't bury survivors." },
-        { q: "A man is found dead alone in the middle of a field with an unopened package beside him and no footprints around. How did he die?", a: "His parachute failed to open." },
-        { q: "What can you catch but not throw?", a: "A cold." },
-        { q: "Mary's father has five daughters: Nana, Nene, Nini, and Nono. What is the fifth daughter's name?", a: "Mary." },
-        { q: "A man asks the bartender for a glass of water. The bartender pulls out a gun and points it at him. The man says 'thank you' and walks out. Why?", a: "He had the hiccups. The shock cured them, so he no longer needed the water." },
-        { q: "A chessboard's two opposite-corner squares are removed. Can you cover the remaining 62 squares with 31 dominoes (each covering two adjacent squares)?", a: "No. The two removed corners share a color. Each domino covers one of each color, so 31 dominoes would need 31 of each color, but the board now has 32 of one and 30 of the other." },
-        { q: "How can 4 be half of 5?", a: "IV is the top half of V in Roman numerals." },
-        { q: "Cross a river with a wolf, a goat, and a cabbage. The boat fits only you and one item. The wolf eats the goat alone; the goat eats the cabbage alone. How do you get all three across?", a: "Take the goat over. Return alone. Take the wolf over and return with the goat. Take the cabbage over. Return alone, then take the goat over." },
-        { q: "What can run but never walks, has a mouth but never talks, has a head but never weeps, has a bed but never sleeps?", a: "A river." },
-        { q: "I have branches but no fruit, trunk, or leaves. What am I?", a: "A bank." },
-        { q: "If you drop me I'm sure to crack, but smile at me and I'll smile back. What am I?", a: "A mirror." },
-        { q: "A boy fell off a 20-foot ladder but wasn't hurt. How?", a: "He fell from the bottom rung." },
-        { q: "An odometer reads 12,321, a palindrome. What's the minimum miles before it shows another palindrome?", a: "100 miles. The next five-digit palindrome is 12,421." },
-        { q: "Nine identical coins, one is counterfeit and lighter. Find the fake with only 2 weighings on a balance scale.", a: "Split into three groups of 3 and weigh A vs B. If balanced, fake is in C. Otherwise it's in the lighter pan. Then weigh two coins of that group; if balanced, the third is fake." },
-        { q: "What has 13 hearts but no organs?", a: "A deck of cards." },
-        { q: "A prisoner is offered a bag with two beans. White = freedom, black = death. He knows the warden rigged it with two black beans. How does he escape death?", a: "He draws one bean and swallows it without looking. The remaining bean is black, which 'proves' he must have drawn the white one." },
-        { q: "I have keys but no locks, space but no rooms. You can enter but not go outside. What am I?", a: "A keyboard." },
-        { q: "A man is born in 1955 and dies in 1955 at age 60. How?", a: "1955 is a room number, not a year." }
-      ];
-
-      function hashStr(s) {
-        let h = 2166136261 >>> 0;
-        for (let i = 0; i < s.length; i++) {
-          h ^= s.charCodeAt(i);
-          h = Math.imul(h, 16777619);
-        }
-        return h >>> 0;
-      }
-
-      const dateKey = new Intl.DateTimeFormat('en-CA', {
-        timeZone: 'America/Indiana/Indianapolis',
-        year: 'numeric', month: '2-digit', day: '2-digit'
-      }).format(new Date());
-
-      const dateNice = new Intl.DateTimeFormat('en-US', {
-        timeZone: 'America/Indiana/Indianapolis',
-        weekday: 'long', month: 'long', day: 'numeric'
-      }).format(new Date());
-
-      const idx = hashStr(dateKey) % teasers.length;
-      const t = teasers[idx];
-
-      document.getElementById('teaser-date').textContent = dateNice;
-      document.getElementById('teaser-q').textContent = t.q;
-      document.getElementById('teaser-a').textContent = t.a;
-
-      const btn = document.getElementById('teaser-reveal');
-      const ans = document.getElementById('teaser-a');
-      btn.addEventListener('click', () => {
-        ans.hidden = false;
-        btn.hidden = true;
-      });
     })();
   </script>
 </body>
