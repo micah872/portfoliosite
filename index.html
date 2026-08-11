@@ -66,7 +66,12 @@
     *, *::before, *::after { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     html, body { overflow-x: hidden; }
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+      /* anchor targets are `section + section` with padding-top:0, so without
+         this every nav jump parks the heading under the fixed ski rail */
+      scroll-padding-top: calc(52px + env(safe-area-inset-top, 0px));
+    }
 
     body {
       background: var(--bg);
@@ -81,7 +86,8 @@
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
-      padding-top: 44px; /* reserve the ski-rail lane */
+      /* reserve the ski-rail lane, plus the notch inset the rail now absorbs */
+      padding-top: calc(44px + env(safe-area-inset-top, 0px));
       transition: background 0.3s ease, color 0.3s ease;
     }
     body::before {
@@ -97,11 +103,14 @@
     ::selection { background: var(--accent); color: var(--bg); }
     :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-    /* scroll skier — a fixed rail at the top; replaces the progress bar */
+    /* scroll skier — a fixed rail at the top; replaces the progress bar.
+       viewport-fit=cover lets the page run under the notch, so the rail grows
+       by the safe-area inset: its background still reaches the physical top of
+       the screen while the bottom-anchored skier clears the status bar. */
     #skitrack {
       position: fixed;
       top: 0; left: 0; right: 0;
-      height: 44px;
+      height: calc(44px + env(safe-area-inset-top, 0px));
       z-index: 500;
       pointer-events: none;
       overflow: hidden;
@@ -956,7 +965,7 @@
         <article class="role reveal">
           <div class="role-head">
             <h3 class="role-title">accounting &amp; technology intern</h3>
-            <span class="role-dates">may 2026 – present</span>
+            <span class="role-dates">may 2026 – aug 2026</span>
           </div>
           <p class="role-org">h.t. hackney · $4B+ wholesale distributor · indianapolis, IN</p>
           <p class="role-desc">a fair mix of crunching numbers on excel and building internal tools</p>
@@ -965,7 +974,7 @@
         <article class="role reveal">
           <div class="role-head">
             <h3 class="role-title">m&amp;a machine learning intern</h3>
-            <span class="role-dates">may 2026 – present</span>
+            <span class="role-dates">april 2026 – present</span>
           </div>
           <p class="role-org">university of indianapolis · indianapolis, IN</p>
           <p class="role-desc">conducting research on machine learning applications in mergers and acquisitions</p>
@@ -977,7 +986,7 @@
             <span class="role-dates">june 2026 – present</span>
           </div>
           <p class="role-org">aperture partners · 501(c)(3) B2B consulting · bloomington, IN</p>
-          <p class="role-desc">student-run 501(c)(3) named kelley's organization of the year, serving clients like stellantis, toyota, reebok, bond ai, and the indianap sports corp</p>
+          <p class="role-desc">student-run 501(c)(3) named kelley's organization of the year, serving clients like stellantis, toyota, reebok, bond ai, and the indianapolis sports corp</p>
         </article>
       </div>
     </section>
