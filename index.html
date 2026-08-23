@@ -116,6 +116,9 @@
       overflow: hidden;
       background: var(--bg);
       border-bottom: 1px solid var(--line);
+      /* iOS Safari (minimized toolbar) scrolls page content through the status
+         bar strip above the layout viewport; bleed the bg upward to cover it */
+      box-shadow: 0 -120px 0 0 var(--bg);
     }
     #skitrack .snowline {
       position: absolute;
