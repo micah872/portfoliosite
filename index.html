@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f0f0d">
   <title>micah gao</title>
   <meta name="description" content="micah gao. self-taught developer, informatics + accounting at IU. regeneron grand prize winner, uc berkeley ai hackathon finalist.">
   <meta property="og:title" content="micah gao">
@@ -14,6 +15,8 @@
       var t = localStorage.getItem('theme');
       if (t !== 'light' && t !== 'dark') t = 'dark';
       document.documentElement.dataset.theme = t;
+      document.querySelector('meta[name="theme-color"]')
+        .setAttribute('content', t === 'dark' ? '#0f0f0d' : '#fafafa');
     })();
   </script>
   <style>
@@ -86,7 +89,7 @@
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
-      /* reserve the ski-rail lane, plus the notch inset the rail now absorbs */
+      /* reserve the ski-rail lane (env() is 0 in-browser, kept for PWA/landscape) */
       padding-top: calc(44px + env(safe-area-inset-top, 0px));
       transition: background 0.3s ease, color 0.3s ease;
     }
@@ -104,9 +107,10 @@
     :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
     /* scroll skier — a fixed rail at the top; replaces the progress bar.
-       viewport-fit=cover lets the page run under the notch, so the rail grows
-       by the safe-area inset: its background still reaches the physical top of
-       the screen while the bottom-anchored skier clears the status bar. */
+       viewport-fit=cover is deliberately NOT set: with it, iOS Safari draws
+       raw page text behind the Dynamic Island where fixed elements (and even
+       their shadows) can't paint. Without it, content scrolling under the
+       status bar gets Safari's native edge blur instead of a broken gap. */
     #skitrack {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -116,9 +120,6 @@
       overflow: hidden;
       background: var(--bg);
       border-bottom: 1px solid var(--line);
-      /* iOS Safari (minimized toolbar) scrolls page content through the status
-         bar strip above the layout viewport; bleed the bg upward to cover it */
-      box-shadow: 0 -120px 0 0 var(--bg);
     }
     #skitrack .snowline {
       position: absolute;
@@ -953,7 +954,7 @@
             <a class="social-link sl-x" href="https://x.com/MicahGao" target="_blank" rel="noopener" aria-label="X" title="X">
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             </a>
-            <a class="social-link sl-resume" href="Micah_Gao_Resume.pdf?v=2026-08-10" target="_blank" rel="noopener" aria-label="Resume (PDF)" title="Resume (PDF)">
+            <a class="social-link sl-resume" href="Micah_Gao_Resume.pdf?v=2026-08-30" target="_blank" rel="noopener" aria-label="Resume (PDF)" title="Resume (PDF)">
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" fill-rule="evenodd" d="M8 3h5.5L18 7.5V19a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm1 8.5h6V13H9v-1.5Zm0 3h6V16H9v-1.5Zm0 3h3.5V19H9v-1.5Z"/></svg>
             </a>
           </div>
@@ -1178,6 +1179,8 @@
       const root = document.documentElement;
       function paint() {
         btn.textContent = root.dataset.theme === 'dark' ? '☼ light' : '☾ dark';
+        document.querySelector('meta[name="theme-color"]')
+          .setAttribute('content', root.dataset.theme === 'dark' ? '#0f0f0d' : '#fafafa');
       }
       btn.addEventListener('click', () => {
         root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
