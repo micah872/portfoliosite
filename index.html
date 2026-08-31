@@ -75,9 +75,8 @@
          composited up there instead (body's background is not enough) */
       background: var(--bg);
       scroll-behavior: smooth;
-      /* anchor targets are `section + section` with padding-top:0, so without
-         this every nav jump parks the heading under the fixed ski rail */
-      scroll-padding-top: calc(52px + env(safe-area-inset-top, 0px));
+      /* small breathing room above anchor-jump targets */
+      scroll-padding-top: 16px;
     }
 
     body {
@@ -93,8 +92,6 @@
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
-      /* reserve the ski-rail lane (env() is 0 in-browser, kept for PWA/landscape) */
-      padding-top: calc(44px + env(safe-area-inset-top, 0px));
       transition: background 0.3s ease, color 0.3s ease;
     }
     body::before {
@@ -109,59 +106,6 @@
 
     ::selection { background: var(--accent); color: var(--bg); }
     :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-
-    /* scroll skier — a fixed rail at the top; replaces the progress bar.
-       viewport-fit=cover is deliberately NOT set: with it, iOS Safari draws
-       raw page text behind the Dynamic Island where fixed elements (and even
-       their shadows) can't paint. Without it, content scrolling under the
-       status bar gets Safari's native edge blur instead of a broken gap. */
-    #skitrack {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: calc(44px + env(safe-area-inset-top, 0px));
-      z-index: 500;
-      pointer-events: none;
-      overflow: hidden;
-      background: var(--bg);
-      border-bottom: 1px solid var(--line);
-    }
-    #skitrack .snowline {
-      position: absolute;
-      left: 0; right: 0;
-      bottom: 5px;
-      height: 1px;
-      background: var(--fg-faint);
-      opacity: 0.28;
-    }
-    .skier {
-      position: absolute;
-      bottom: 4px;
-      left: 0;
-      transform: translateX(6px);
-      will-change: transform;
-    }
-    .skier-sprite {
-      display: block;
-      width: 46px;
-      height: 35px;
-      transform-origin: center bottom;
-      animation: ski-bob 0.42s steps(2, jump-none) infinite;
-    }
-    .skier-sprite svg {
-      display: block;
-      width: 46px;
-      height: 35px;
-      image-rendering: pixelated;
-    }
-    @keyframes ski-bob {
-      0%   { transform: translateY(0); }
-      100% { transform: translateY(-1.5px); }
-    }
-    .skier .spray { animation: spray-flicker 0.34s steps(2) infinite; }
-    @keyframes spray-flicker {
-      0%, 100% { opacity: 0.85; }
-      50%      { opacity: 0.2; }
-    }
 
     /* clock — sits in the top-right meta block, scrolls with hero */
     .clock-pill {
@@ -813,8 +757,6 @@
       .clock-pill .colon,
       .name .caret,
       .term-caret,
-      .skier-sprite,
-      .skier .spray,
       .bill { animation: none; }
       .bill { display: none; }
       .reveal { opacity: 1; transform: none; transition: none; }
@@ -822,73 +764,6 @@
   </style>
 </head>
 <body>
-
-  <div id="skitrack" aria-hidden="true">
-    <div class="snowline"></div>
-    <div class="skier">
-      <div class="skier-sprite">
-        <svg width="46" height="35" viewBox="0 0 26 20" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
-          <!-- snow spray (behind) -->
-          <g class="spray" fill="#9fc0da">
-            <rect x="2" y="13" width="1" height="1"/>
-            <rect x="0" y="15" width="1" height="1"/>
-            <rect x="3" y="16" width="1" height="1"/>
-            <rect x="1" y="17" width="1" height="1"/>
-            <rect x="0" y="18" width="1" height="1"/>
-          </g>
-          <!-- skis -->
-          <g fill="#57a0d6">
-            <rect x="3" y="15" width="20" height="1"/>
-            <rect x="22" y="14" width="2" height="1"/>
-            <rect x="5" y="17" width="20" height="1"/>
-            <rect x="24" y="16" width="2" height="1"/>
-          </g>
-          <!-- pole -->
-          <g fill="#3a342b">
-            <rect x="9" y="9" width="1" height="1"/>
-            <rect x="8" y="10" width="1" height="1"/>
-            <rect x="7" y="11" width="1" height="1"/>
-            <rect x="6" y="12" width="1" height="1"/>
-            <rect x="5" y="13" width="1" height="1"/>
-            <rect x="4" y="13" width="2" height="1"/>
-          </g>
-          <!-- legs + boots -->
-          <g fill="#3a342b">
-            <rect x="11" y="11" width="1" height="3"/>
-            <rect x="13" y="11" width="1" height="1"/>
-            <rect x="13" y="12" width="2" height="1"/>
-            <rect x="14" y="13" width="1" height="1"/>
-            <rect x="10" y="14" width="2" height="1"/>
-            <rect x="15" y="14" width="2" height="1"/>
-          </g>
-          <!-- jacket + arms + hat band -->
-          <g fill="#e0564d">
-            <rect x="15" y="3" width="5" height="1"/>
-            <rect x="14" y="6" width="3" height="1"/>
-            <rect x="13" y="7" width="4" height="1"/>
-            <rect x="12" y="8" width="4" height="1"/>
-            <rect x="12" y="9" width="2" height="1"/>
-            <rect x="11" y="10" width="3" height="1"/>
-            <rect x="17" y="7" width="1" height="1"/>
-            <rect x="18" y="8" width="1" height="1"/>
-            <rect x="11" y="7" width="1" height="1"/>
-            <rect x="10" y="8" width="1" height="1"/>
-          </g>
-          <!-- hat top -->
-          <rect x="16" y="2" width="3" height="1" fill="#b7433b"/>
-          <!-- face + gloves -->
-          <g fill="#f0c9a4">
-            <rect x="16" y="4" width="4" height="2"/>
-            <rect x="17" y="6" width="2" height="1"/>
-            <rect x="18" y="9" width="1" height="1"/>
-            <rect x="10" y="9" width="1" height="1"/>
-          </g>
-          <!-- goggles -->
-          <rect x="18" y="4" width="2" height="1" fill="#3a342b"/>
-        </svg>
-      </div>
-    </div>
-  </div>
 
   <main>
     <section class="hero" id="top">
@@ -1192,32 +1067,6 @@
         paint();
       });
       paint();
-    })();
-
-    /* scroll skier — glides left→right with scroll progress */
-    (function skier() {
-      const track = document.getElementById('skitrack');
-      const skier = track && track.querySelector('.skier');
-      if (!skier) return;
-      const EDGE = 6; // keep the sprite off the extreme left/right corners
-      let ticking = false;
-      function update() {
-        const doc = document.documentElement;
-        const max = doc.scrollHeight - doc.clientHeight;
-        // clamp: iOS rubber-band scrolling drives scrollY negative / past max,
-        // which otherwise flings the skier off the ends of the rail
-        const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-        const maxX = Math.max(0, track.clientWidth - skier.offsetWidth - EDGE * 2);
-        skier.style.transform = 'translateX(' + (EDGE + p * maxX) + 'px)';
-        ticking = false;
-      }
-      addEventListener('scroll', () => {
-        if (!ticking) { ticking = true; requestAnimationFrame(update); }
-      }, { passive: true });
-      addEventListener('resize', update, { passive: true });
-      // the mobile URL bar collapsing resizes the visual viewport, not window
-      if (window.visualViewport) visualViewport.addEventListener('resize', update, { passive: true });
-      update();
     })();
 
     (function typeIntro() {
