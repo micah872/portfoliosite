@@ -44,7 +44,12 @@
 
     *, *::before, *::after { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html {
+      /* Safari 26 samples the ROOT background for the status-bar backdrop;
+         without this, page text composites behind the Dynamic Island */
+      background: var(--bg);
+      scroll-behavior: smooth;
+    }
 
     body {
       background: var(--bg);

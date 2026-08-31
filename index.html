@@ -70,6 +70,10 @@
     html, body { margin: 0; padding: 0; }
     html, body { overflow-x: hidden; }
     html {
+      /* Safari 26 samples the ROOT background to paint the strip behind the
+         Dynamic Island / status bar; leave it unset and raw page text gets
+         composited up there instead (body's background is not enough) */
+      background: var(--bg);
       scroll-behavior: smooth;
       /* anchor targets are `section + section` with padding-top:0, so without
          this every nav jump parks the heading under the fixed ski rail */
