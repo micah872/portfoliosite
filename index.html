@@ -869,7 +869,7 @@
             <span class="role-dates">june 2026 – present</span>
           </div>
           <p class="role-org">aperture partners · 501(c)(3) B2B consulting · bloomington, IN</p>
-          <p class="role-desc">student-run 501(c)(3) named kelley's organization of the year, serving clients like stellantis, toyota, reebok, bond ai, and the indianapolis sports corp</p>
+          <p class="role-desc">student-led 501(c)(3) at Indiana University delivering real client engagements across finance, strategy, technology, and marketing.</p>
         </article>
       </div>
     </section>
@@ -1067,6 +1067,32 @@
         paint();
       });
       paint();
+    })();
+
+    /* scroll skier — glides left→right with scroll progress */
+    (function skier() {
+      const track = document.getElementById('skitrack');
+      const skier = track && track.querySelector('.skier');
+      if (!skier) return;
+      const EDGE = 6; // keep the sprite off the extreme left/right corners
+      let ticking = false;
+      function update() {
+        const doc = document.documentElement;
+        const max = doc.scrollHeight - doc.clientHeight;
+        // clamp: iOS rubber-band scrolling drives scrollY negative / past max,
+        // which otherwise flings the skier off the ends of the rail
+        const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+        const maxX = Math.max(0, track.clientWidth - skier.offsetWidth - EDGE * 2);
+        skier.style.transform = 'translateX(' + (EDGE + p * maxX) + 'px)';
+        ticking = false;
+      }
+      addEventListener('scroll', () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }, { passive: true });
+      addEventListener('resize', update, { passive: true });
+      // the mobile URL bar collapsing resizes the visual viewport, not window
+      if (window.visualViewport) visualViewport.addEventListener('resize', update, { passive: true });
+      update();
     })();
 
     (function typeIntro() {
