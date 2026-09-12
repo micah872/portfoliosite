@@ -8,6 +8,12 @@
   <meta name="description" content="micah gao. self-taught developer, informatics + accounting at IU. regeneron grand prize winner, uc berkeley ai hackathon finalist.">
   <meta property="og:title" content="micah gao">
   <meta property="og:description" content="Self-taught developer. Business student. Skier, in that order depending on the snow.">
+  <link rel="canonical" href="https://micahgao.com/">
+  <meta property="og:url" content="https://micahgao.com/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="micah gao">
+  <meta name="twitter:description" content="Self-taught developer. Business student. Skier, in that order depending on the snow.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='3' y='3' width='58' height='58' fill='%23f5f5f5' stroke='%230a0a0a' stroke-width='4'/><text x='32' y='49' font-family='Courier New, Courier, monospace' font-size='52' font-weight='700' text-anchor='middle' fill='%230a0a0a'>m</text></svg>">
   <script>
     /* set theme before first paint to avoid flash */
@@ -1058,6 +1064,8 @@
       const root = document.documentElement;
       function paint() {
         btn.textContent = root.dataset.theme === 'dark' ? '☼ light' : '☾ dark';
+        /* accessible name must include the visible text (WCAG 2.5.3) */
+        btn.setAttribute('aria-label', root.dataset.theme === 'dark' ? 'switch to light theme' : 'switch to dark theme');
         document.querySelector('meta[name="theme-color"]')
           .setAttribute('content', root.dataset.theme === 'dark' ? '#0f0f0d' : '#fafafa');
       }

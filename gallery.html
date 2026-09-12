@@ -6,6 +6,12 @@
   <meta name="theme-color" content="#0f0f0d">
   <title>camera roll — micah gao</title>
   <meta name="description" content="photos by micah gao.">
+  <link rel="canonical" href="https://micahgao.com/gallery.html">
+  <meta property="og:title" content="camera roll — micah gao">
+  <meta property="og:description" content="photos by micah gao.">
+  <meta property="og:url" content="https://micahgao.com/gallery.html">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='3' y='3' width='58' height='58' fill='%23f5f5f5' stroke='%230a0a0a' stroke-width='4'/><text x='32' y='49' font-family='Courier New, Courier, monospace' font-size='52' font-weight='700' text-anchor='middle' fill='%230a0a0a'>m</text></svg>">
   <script>
     /* set theme before first paint to avoid flash */
@@ -245,43 +251,43 @@
 
       <div class="grid">
         <figure class="tile">
-          <div class="tile-img"><img src="photos/01.jpg" alt="" loading="lazy"></div>
+          <div class="tile-img"><img src="photos/01.jpg" alt="Chicago skyline and river at dusk from the Dearborn Street bridge" loading="lazy"></div>
           <figcaption>@chicago, IL</figcaption>
         </figure>
         <figure class="tile">
-          <div class="tile-img"><img src="photos/02.jpg" alt="" loading="lazy"></div>
+          <div class="tile-img"><img src="photos/02.jpg" alt="Selfie in ski gear at the top of a run at Perfect North Slopes" loading="lazy"></div>
           <figcaption>@perfect north slopes, IN</figcaption>
         </figure>
         <figure class="tile">
-          <div class="tile-img"><img src="photos/03.jpg" alt="" loading="lazy"></div>
+          <div class="tile-img"><img src="photos/03.jpg" alt="Red-lit billiards room with pool tables and an IU logo on the wall" loading="lazy"></div>
           <figcaption>@billiards</figcaption>
         </figure>
         <figure class="tile">
-          <div class="tile-img"><img src="photos/04.jpg" alt="" loading="lazy"></div>
+          <div class="tile-img"><img src="photos/04.jpg" alt="Stanford Memorial Court arches lit up at night" loading="lazy"></div>
           <figcaption>@stanford, CA</figcaption>
         </figure>
         <figure class="tile">
-          <div class="tile-img"><img src="photos/05.jpg" alt="" loading="lazy"></div>
+          <div class="tile-img"><img src="photos/05.jpg" alt="Lightsaber duels on terraced steps at night during TreeHacks" loading="lazy"></div>
           <figcaption>@treehacks, CA</figcaption>
         </figure>
         <figure class="tile">
-          <div class="tile-img"><img src="photos/06.jpeg" alt="" loading="lazy"></div>
+          <div class="tile-img"><img src="photos/06.jpeg" alt="Gym mirror selfie mid-flex" loading="lazy"></div>
           <figcaption>@gym</figcaption>
         </figure>
         <figure class="tile">
-          <div class="tile-img"><img src="photos/07.jpg" alt="" loading="lazy"></div>
+          <div class="tile-img"><img src="photos/07.jpg" alt="Airplane wing over a grid of city lights at dusk" loading="lazy"></div>
           <figcaption>@sky</figcaption>
         </figure>
         <figure class="tile">
-          <div class="tile-img"><img src="photos/08.jpg" alt="" loading="lazy"></div>
+          <div class="tile-img"><img src="photos/08.jpg" alt="Team selfie in front of a packed lecture hall at HackPrinceton" loading="lazy"></div>
           <figcaption>@princeton, NJ</figcaption>
         </figure>
         <figure class="tile">
-          <div class="tile-img"><img src="photos/09.jpeg" alt="" loading="lazy"></div>
+          <div class="tile-img"><img src="photos/09.jpeg" alt="Posing with the giant DU letters at Deloitte University" loading="lazy"></div>
           <figcaption>@deloitte</figcaption>
         </figure>
         <figure class="tile">
-          <div class="tile-img"><img src="photos/10.jpeg" alt="" loading="lazy"></div>
+          <div class="tile-img"><img src="photos/10.jpeg" alt="PEAK6 trading floor in the Chicago Board of Trade building" loading="lazy"></div>
           <figcaption>@PEAK6 Chicago Board of Trade</figcaption>
         </figure>
       </div>
@@ -304,6 +310,8 @@
       const root = document.documentElement;
       function paint() {
         btn.textContent = root.dataset.theme === 'dark' ? '☼ light' : '☾ dark';
+        /* accessible name must include the visible text (WCAG 2.5.3) */
+        btn.setAttribute('aria-label', root.dataset.theme === 'dark' ? 'switch to light theme' : 'switch to dark theme');
         document.querySelector('meta[name="theme-color"]')
           .setAttribute('content', root.dataset.theme === 'dark' ? '#0f0f0d' : '#fafafa');
       }
