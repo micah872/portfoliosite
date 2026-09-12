@@ -1,2 +1,2 @@
-#pics
-photos/
+# NOTE: photos/ used to be ignored here, which silently kept newly added
+# photos out of git while the originals stayed tracked - broke the gallery
