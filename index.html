@@ -1077,32 +1077,6 @@
       paint();
     })();
 
-    /* scroll skier — glides left→right with scroll progress */
-    (function skier() {
-      const track = document.getElementById('skitrack');
-      const skier = track && track.querySelector('.skier');
-      if (!skier) return;
-      const EDGE = 6; // keep the sprite off the extreme left/right corners
-      let ticking = false;
-      function update() {
-        const doc = document.documentElement;
-        const max = doc.scrollHeight - doc.clientHeight;
-        // clamp: iOS rubber-band scrolling drives scrollY negative / past max,
-        // which otherwise flings the skier off the ends of the rail
-        const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-        const maxX = Math.max(0, track.clientWidth - skier.offsetWidth - EDGE * 2);
-        skier.style.transform = 'translateX(' + (EDGE + p * maxX) + 'px)';
-        ticking = false;
-      }
-      addEventListener('scroll', () => {
-        if (!ticking) { ticking = true; requestAnimationFrame(update); }
-      }, { passive: true });
-      addEventListener('resize', update, { passive: true });
-      // the mobile URL bar collapsing resizes the visual viewport, not window
-      if (window.visualViewport) visualViewport.addEventListener('resize', update, { passive: true });
-      update();
-    })();
-
     (function typeIntro() {
       const el = document.getElementById('name-text');
       const phrases = ["Hello World! I'm Micah.", '你好，世界！我是高博文。'];
